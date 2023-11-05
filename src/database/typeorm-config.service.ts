@@ -30,28 +30,29 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         migrationsDir: 'src/database/migrations',
         subscribersDir: 'subscriber',
       },
-      extra: {
-        // based on https://node-postgres.com/apis/pool
-        // max connection pool size
-        max: this.configService.get('database.maxConnections', { infer: true }),
-        ssl: this.configService.get('database.sslEnabled', { infer: true })
-          ? {
-              rejectUnauthorized: this.configService.get(
-                'database.rejectUnauthorized',
-                { infer: true },
-              ),
-              ca:
-                this.configService.get('database.ca', { infer: true }) ??
-                undefined,
-              key:
-                this.configService.get('database.key', { infer: true }) ??
-                undefined,
-              cert:
-                this.configService.get('database.cert', { infer: true }) ??
-                undefined,
-            }
-          : undefined,
-      },
+      //    보류
+      // extra: {
+      //   // based on https://node-postgres.com/apis/pool
+      //   // max connection pool size
+      //   max: this.configService.get('database.maxConnections', { infer: true }),
+      //   ssl: this.configService.get('database.sslEnabled', { infer: true })
+      //     ? {
+      //       rejectUnauthorized: this.configService.get(
+      //         'database.rejectUnauthorized',
+      //         { infer: true },
+      //       ),
+      //       ca:
+      //         this.configService.get('database.ca', { infer: true }) ??
+      //         undefined,
+      //       key:
+      //         this.configService.get('database.key', { infer: true }) ??
+      //         undefined,
+      //       cert:
+      //         this.configService.get('database.cert', { infer: true }) ??
+      //         undefined,
+      //     }
+      //     : undefined,
+      // },
     } as TypeOrmModuleOptions;
   }
 }
