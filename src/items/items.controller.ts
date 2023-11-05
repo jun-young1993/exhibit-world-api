@@ -2,10 +2,20 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { ApiTags } from "@nestjs/swagger";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Item } from "./entities/item.entity";
+import { Repository } from "typeorm";
 
-@Controller('items')
+@ApiTags('Items')
+@Controller({
+  path: 'items',
+  version: '1',
+})
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) {}
+  constructor(
+    private readonly itemsService: ItemsService
+  ) {}
 
   @Post()
   create(@Body() createItemDto: CreateItemDto) {
