@@ -8,6 +8,7 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
 import { TypeOrmConfigService } from "./database/typeorm-config.service";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { ItemModule } from './item/item.module';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ItemModule } from './item/item.module';
       },
     } as TypeOrmModuleAsyncOptions),
     ItemModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from "@nestjs/config";
 import { AllConfigType } from "./config/config.type";
+import { VersioningType } from "@nestjs/common";
 
 
 async function bootstrap() {
@@ -15,6 +16,9 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
   await app.listen(configService.getOrThrow('app.port', { infer: true }));
