@@ -8,6 +8,10 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
 import { TypeOrmConfigService } from "./database/typeorm-config.service";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { ItemsModule } from './items/items.module';
+import { MeshesModule } from './meshes/meshes.module';
+import { MaterialsModule } from './materials/materials.module';
+import { GeometriesModule } from './geometries/geometries.module';
+
 
 @Module({
   imports: [
@@ -26,6 +30,9 @@ import { ItemsModule } from './items/items.module';
       },
     } as TypeOrmModuleAsyncOptions),
     ItemsModule,
+    MeshesModule,
+    MaterialsModule,
+    GeometriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
