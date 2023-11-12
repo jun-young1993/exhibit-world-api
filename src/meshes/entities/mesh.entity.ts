@@ -15,11 +15,48 @@ export class Mesh extends EntityHelper{
   })
   type?: string;
 
-  @OneToOne(() => Geometry, { eager: true })
-  @JoinColumn()
-  geometry: Geometry;
+  @Column()
+  positionX: number;
 
-  @OneToOne(() => Material, { eager: true })
+  @Column()
+  positionY: number;
+
+  @Column()
+  positionZ: number;
+
+  @Column()
+  rotationX: number;
+
+  @Column()
+  rotationY: number;
+
+  @Column()
+  rotationZ: number;
+
+  @Column()
+  quaternionX: number;
+
+  @Column()
+  quaternionY: number;
+
+  @Column()
+  quaternionZ: number;
+
+  @Column()
+  quaternionW: number;
+
+  @OneToOne(
+    () => Material,
+    (material) => material.mesh
+  )
   @JoinColumn()
-  material: Material;
+  material: Material
+
+  @OneToOne(
+    () => Geometry,
+    (geometry) => geometry.mesh
+  )
+  @JoinColumn()
+  geometry: Geometry
+
 }

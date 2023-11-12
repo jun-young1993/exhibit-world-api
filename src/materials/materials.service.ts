@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMaterialDto } from './dto/create-material.dto';
 import { UpdateMaterialDto } from './dto/update-material.dto';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Material } from "./entities/material.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class MaterialsService {
+  constructor(
+    @InjectRepository(Material)
+    private readonly materialRepository: Repository<Material>
+  ) {
+  }
   create(createMaterialDto: CreateMaterialDto) {
-    return 'This action adds a new material';
+    return this.materialRepository.save(
+      this.materialRepository.create(
+        createMaterialDto
+      )
+    );
   }
 
   findAll() {

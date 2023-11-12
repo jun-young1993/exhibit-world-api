@@ -1,15 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMeshDto } from './dto/create-mesh.dto';
 import { UpdateMeshDto } from './dto/update-mesh.dto';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Mesh } from "./entities/mesh.entity";
 
 @Injectable()
 export class MeshesService {
+  constructor(
+    @InjectRepository(Mesh)
+    private readonly meshRepository: Repository<Mesh>
+  ) {
+  }
   create(createMeshDto: CreateMeshDto) {
-    return 'This action adds a new mesh';
+    return this.meshRepository.save(
+      this.meshRepository.create(createMeshDto)
+    );
   }
 
   findAll() {
-    return `This action returns all meshes`;
+    return this.meshRepository.find();
+  }
+
+  findAllBulk() {
+    return this.meshRepository.find({
+        relations: ['material','geometry']
+      })
   }
 
   findOne(id: number) {

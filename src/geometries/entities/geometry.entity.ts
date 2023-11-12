@@ -2,6 +2,7 @@ import { EntityHelper } from "../../utils/entity-helper";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
+import { IsUUID } from "class-validator";
 
 export enum GeometryType {
   Box = 'BoxGeometry',
@@ -22,21 +23,26 @@ export class Geometry extends EntityHelper{
     default: GeometryType.Box, // Default to BoxGeometry if not specified
   })
   @Column()
-  type: string;
+  type: GeometryType;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0})
   width: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
   height: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
+  depth: number;
+
+  @Column({ nullable: true, default: 0 })
   radius: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
   segments: number;
 
-  @OneToOne(() => Mesh, mesh => mesh.geometry)
-  @JoinColumn({ name: 'meshId' })
+  @OneToOne(
+    () => Mesh,
+    (mesh) => mesh.geometry
+  )
   mesh: Mesh;
 }

@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGeometryDto } from './dto/create-geometry.dto';
 import { UpdateGeometryDto } from './dto/update-geometry.dto';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Geometry } from "./entities/geometry.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class GeometriesService {
+  constructor(
+    @InjectRepository(Geometry)
+    private readonly geometryRepository: Repository<Geometry>
+  ) {
+  }
   create(createGeometryDto: CreateGeometryDto) {
-    return 'This action adds a new geometry';
+    console.log(createGeometryDto);
+    return this.geometryRepository.save(
+      this.geometryRepository.create(createGeometryDto)
+    );
   }
 
   findAll() {

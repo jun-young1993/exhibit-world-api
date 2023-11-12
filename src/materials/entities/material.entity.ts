@@ -1,10 +1,14 @@
 // material.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne, BeforeInsert } from "typeorm";
 import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
+import { Geometry } from "../../geometries/entities/geometry.entity";
 
+export enum MaterialType {
+  MeshBasicMaterial = 'MeshBasicMaterial'
+}
 
 @Entity('material')
 export class Material extends EntityHelper{
@@ -12,8 +16,12 @@ export class Material extends EntityHelper{
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
-  type: string;
+  @Column({
+    type: 'enum',
+    enum: MaterialType,
+    default: MaterialType.MeshBasicMaterial, // 기본 MaterialType 설정
+  })
+  type: MaterialType;
 
   @Column({ nullable: true })
   color: string;
@@ -24,7 +32,10 @@ export class Material extends EntityHelper{
   @Column({ nullable: true })
   map: string;
 
-  @OneToOne(() => Mesh, mesh => mesh.material)
-  @JoinColumn({ name: 'meshId' })
+  @OneToOne(
+    () => Mesh,
+    (mesh) => mesh.material
+  )
   mesh: Mesh;
+
 }

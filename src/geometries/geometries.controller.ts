@@ -2,12 +2,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { GeometriesService } from './geometries.service';
 import { CreateGeometryDto } from './dto/create-geometry.dto';
 import { UpdateGeometryDto } from './dto/update-geometry.dto';
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Geometries')
 @Controller('geometries')
 export class GeometriesController {
   constructor(private readonly geometriesService: GeometriesService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new geometry', description: 'Creates a new geometry with the specified parameters.' })
   create(@Body() createGeometryDto: CreateGeometryDto) {
     return this.geometriesService.create(createGeometryDto);
   }
