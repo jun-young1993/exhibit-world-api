@@ -23,10 +23,10 @@ export class Material extends EntityHelper{
   })
   type: MaterialType;
 
-  @Column({ nullable: true })
+  @Column({ default: '#ffffff' })
   color: string;
 
-  @Column({ nullable: true })
+  @Column({ default: 1 })
   opacity: number;
 
   @Column({ nullable: true })
