@@ -11,6 +11,7 @@ import { ItemsModule } from './items/items.module';
 import { MeshesModule } from './meshes/meshes.module';
 import { MaterialsModule } from './materials/materials.module';
 import { GeometriesModule } from './geometries/geometries.module';
+import { TexturesModule } from './textures/textures.module';
 
 
 @Module({
@@ -32,7 +33,8 @@ import { GeometriesModule } from './geometries/geometries.module';
     ItemsModule,
     MeshesModule,
     MaterialsModule,
-    GeometriesModule
+    GeometriesModule,
+    TexturesModule
   ],
   controllers: [AppController],
   providers: [AppService],
