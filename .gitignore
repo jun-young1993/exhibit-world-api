@@ -40,3 +40,5 @@ lerna-debug.log*
 /ormconfig.json
 
 .history
+
+package-lock.json
