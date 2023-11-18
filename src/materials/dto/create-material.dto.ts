@@ -3,6 +3,8 @@ import { GeometryType } from "../../geometries/entities/geometry.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { MaterialType } from "../entities/material.entity";
 import { Mesh } from "../../meshes/entities/mesh.entity";
+import { CreateTextureDto } from "../../textures/dto/create-texture.dto";
+import { Texture } from "../../textures/entities/texture.entity";
 
 export class CreateMaterialDto {
 
@@ -19,8 +21,5 @@ export class CreateMaterialDto {
   @IsNumber()
   opacity?: number;
 
-  @ApiProperty({ example: 'texture.jpg', description: 'Map of the material' })
-  @IsOptional()
-  @IsString()
-  map?: string;
+  texture?: Texture | CreateTextureDto;
 }

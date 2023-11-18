@@ -7,11 +7,11 @@ import databaseConfig from "./config/database.config";
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from "@nestjs/typeorm";
 import { TypeOrmConfigService } from "./database/typeorm-config.service";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { ItemsModule } from './items/items.module';
 import { MeshesModule } from './meshes/meshes.module';
 import { MaterialsModule } from './materials/materials.module';
 import { GeometriesModule } from './geometries/geometries.module';
-import { TexturesModule } from './textures/textures.module';
+import { ImagesModule } from './images/images.module';
+
 
 
 @Module({
@@ -30,11 +30,10 @@ import { TexturesModule } from './textures/textures.module';
         return new DataSource(options).initialize();
       },
     } as TypeOrmModuleAsyncOptions),
-    ItemsModule,
     MeshesModule,
     MaterialsModule,
     GeometriesModule,
-    TexturesModule
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

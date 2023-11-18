@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { EntityHelper } from "../../utils/entity-helper";
 import { Material } from "../../materials/entities/material.entity";
 import { Geometry } from "../../geometries/entities/geometry.entity";
+import { Texture } from "../../textures/entities/texture.entity";
 
 @Entity({name: 'mesh'})
 export class Mesh extends EntityHelper{

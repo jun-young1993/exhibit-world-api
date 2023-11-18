@@ -13,4 +13,6 @@ export class CreateBulkDto {
 
   @ApiProperty({ type: CreateGeometryDto, description: 'Geometry creation data' })
   geometry: CreateGeometryDto;
+
+
 }

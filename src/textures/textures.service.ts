@@ -1,26 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTextureDto } from './dto/create-texture.dto';
-import { UpdateTextureDto } from './dto/update-texture.dto';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Texture } from "./entities/texture.entity";
+import { Repository } from "typeorm";
+import { CreateTextureDto } from "./dto/create-texture.dto";
+import { ImagesService } from "../images/images.service";
 
-@Injectable()
 export class TexturesService {
-  create(createTextureDto: CreateTextureDto) {
-    return 'This action adds a new texture';
+  constructor(
+    @InjectRepository(Texture)
+    private readonly textureRepository: Repository<Texture>,
+    private readonly imagesService: ImagesService
+  ) {
   }
 
-  findAll() {
-    return `This action returns all textures`;
-  }
+  async create(createTextureDto: CreateTextureDto) {
+    const image = await this.imagesService.findOne(createTextureDto.uuid);
 
-  findOne(id: number) {
-    return `This action returns a #${id} texture`;
-  }
+    createTextureDto.image = image
+    const texture = await this.textureRepository.save(
+      this.textureRepository.create(createTextureDto)
+    )
 
-  update(id: number, updateTextureDto: UpdateTextureDto) {
-    return `This action updates a #${id} texture`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} texture`;
+    return texture;
   }
 }
