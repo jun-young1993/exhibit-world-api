@@ -5,7 +5,10 @@ import { UpdateGeometryDto } from './dto/update-geometry.dto';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Geometries')
-@Controller('geometries')
+@Controller({
+  path: 'geometries',
+  version: '1'
+})
 export class GeometriesController {
   constructor(private readonly geometriesService: GeometriesService) {}
 
@@ -27,7 +30,7 @@ export class GeometriesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGeometryDto: UpdateGeometryDto) {
-    return this.geometriesService.update(+id, updateGeometryDto);
+    return this.geometriesService.update(id, updateGeometryDto);
   }
 
   @Delete(':id')

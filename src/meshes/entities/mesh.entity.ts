@@ -16,34 +16,34 @@ export class Mesh extends EntityHelper{
   })
   type?: string;
 
-  @Column()
+  @Column('float',{scale: 5})
   positionX: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   positionY: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   positionZ: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   rotationX: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   rotationY: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   rotationZ: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   quaternionX: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   quaternionY: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   quaternionZ: number;
 
-  @Column()
+  @Column('float',{scale: 5})
   quaternionW: number;
 
   @OneToOne(

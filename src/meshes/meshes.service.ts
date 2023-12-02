@@ -24,7 +24,7 @@ export class MeshesService {
 
   findAllBulk() {
     return this.meshRepository.find({
-        relations: ['material','geometry']
+        relations: ['material','geometry', 'material.texture', 'material.texture.image']
       })
   }
 
@@ -32,8 +32,8 @@ export class MeshesService {
     return `This action returns a #${id} mesh`;
   }
 
-  update(id: number, updateMeshDto: UpdateMeshDto) {
-    return `This action updates a #${id} mesh`;
+  update(id: string, updateMeshDto: UpdateMeshDto) {
+    return this.meshRepository.update({ id: id }, updateMeshDto);
   }
 
   remove(id: number) {

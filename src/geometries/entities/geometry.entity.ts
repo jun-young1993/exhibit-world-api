@@ -25,16 +25,16 @@ export class Geometry extends EntityHelper{
   @Column()
   type: GeometryType;
 
-  @Column({ nullable: true, default: 0})
+  @Column('float',{ nullable: true, default: 0, scale: 5 })
   width: number;
 
-  @Column({ nullable: true, default: 0 })
+  @Column('float',{ nullable: true, default: 0, scale: 5 })
   height: number;
 
-  @Column({ nullable: true, default: 0 })
+  @Column('float',{ nullable: true, default: 0, scale: 5 })
   depth: number;
 
-  @Column({ nullable: true, default: 0 })
+  @Column('float',{ nullable: true, default: 0, scale: 5 })
   radius: number;
 
   @Column({ nullable: true, default: 0 })

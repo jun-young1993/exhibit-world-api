@@ -78,7 +78,8 @@ export class MeshesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMeshDto: UpdateMeshDto) {
-    return this.meshesService.update(+id, updateMeshDto);
+
+    return this.meshesService.update(id, updateMeshDto);
   }
 
   @Delete(':id')

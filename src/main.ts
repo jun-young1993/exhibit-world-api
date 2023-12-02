@@ -19,7 +19,11 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  app.enableCors(); // CORS 활성화
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  }); // CORS 활성화
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('API docs')

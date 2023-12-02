@@ -27,8 +27,8 @@ export class GeometriesService {
     return `This action returns a #${id} geometry`;
   }
 
-  update(id: number, updateGeometryDto: UpdateGeometryDto) {
-    return `This action updates a #${id} geometry`;
+  update(id: string, updateGeometryDto: UpdateGeometryDto) {
+    return this.geometryRepository.update(id, updateGeometryDto);
   }
 
   remove(id: number) {

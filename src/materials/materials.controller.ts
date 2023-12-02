@@ -5,7 +5,10 @@ import { UpdateMaterialDto } from './dto/update-material.dto';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Materials')
-@Controller('materials')
+@Controller({
+  path: 'materials',
+  version: '1'
+})
 export class MaterialsController {
   constructor(private readonly materialsService: MaterialsService) {}
 
@@ -26,8 +29,9 @@ export class MaterialsController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a material', description: 'Update a material with the specified parameters.' })
   update(@Param('id') id: string, @Body() updateMaterialDto: UpdateMaterialDto) {
-    return this.materialsService.update(+id, updateMaterialDto);
+    return this.materialsService.update(id, updateMaterialDto);
   }
 
   @Delete(':id')

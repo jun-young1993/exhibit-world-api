@@ -41,8 +41,8 @@ export class MaterialsService {
     return `This action returns a #${id} material`;
   }
 
-  update(id: number, updateMaterialDto: UpdateMaterialDto) {
-    return `This action updates a #${id} material`;
+  update(id: string, updateMaterialDto: UpdateMaterialDto) {
+    return this.materialRepository.update(id, updateMaterialDto);
   }
 
   remove(id: number) {

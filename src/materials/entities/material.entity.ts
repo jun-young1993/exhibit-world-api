@@ -28,7 +28,7 @@ export class Material extends EntityHelper{
   @Column({ default: '#ffffff' })
   color: string;
 
-  @Column({ default: 1 })
+  @Column('float',{ default: 1 , scale: 2})
   opacity: number;
 
   @OneToOne(
