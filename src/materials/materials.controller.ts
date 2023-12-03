@@ -24,13 +24,15 @@ export class MaterialsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.materialsService.findOne(+id);
+  @ApiOperation({ summary: 'Find a material', description: 'find a material with the specified parameters.' })
+  async findOne(@Param('id') id: string) {
+    return this.materialsService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a material', description: 'Update a material with the specified parameters.' })
   update(@Param('id') id: string, @Body() updateMaterialDto: UpdateMaterialDto) {
+
     return this.materialsService.update(id, updateMaterialDto);
   }
 

@@ -9,7 +9,7 @@ import { Image } from "../../images/entities/image.entity";
 export class Texture extends EntityHelper{
   @ApiProperty({ example: 'cbcfa8b8-3a25-4adb-a9c6-e325f0d0f3ae' })
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ default: 1001 })
   wrapT: number;

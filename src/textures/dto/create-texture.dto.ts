@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { Image } from "../../images/entities/image.entity";
+import { CreateGeometryDto } from "../../geometries/dto/create-geometry.dto";
 
 export class CreateTextureDto {
   @ApiProperty({example: 1001, description: 'The wrapT of the texture'})
@@ -23,9 +24,6 @@ export class CreateTextureDto {
   @IsNumber()
   repeatY: number;
 
-  @ApiProperty({example: 'cbcfa8b8-3a25-4adb-a9c6-e325f0d0f3ae', description: 'image item id'})
-  @IsString()
-  uuid: string;
-
+  @ApiProperty({ type: Image, description: 'Image data' })
   image: Image
 }

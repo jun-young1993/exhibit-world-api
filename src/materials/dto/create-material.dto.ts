@@ -21,5 +21,7 @@ export class CreateMaterialDto {
   @IsNumber()
   opacity?: number;
 
+  @ApiProperty({ type: CreateTextureDto, description: 'Material creation data' })
+  @IsOptional()
   texture?: Texture | CreateTextureDto;
 }

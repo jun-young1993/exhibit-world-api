@@ -20,7 +20,7 @@ export class ImagesController {
 
 
   @Post('upload/:purpose')
-  @ApiOperation({ summary: 'Upload a new texture Image file' })
+  @ApiOperation({description: `purpose: ${Object.values(ImageType).join(',')}`, summary: `Upload a new texture Image file`})
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -59,7 +59,7 @@ export class ImagesController {
     return this.imagesService.create(createImageDto);
   }
 
-  @ApiOperation({ summary: 'find by purpose' })
+  @ApiOperation({description: `purpose: ${Object.values(ImageType).join(',')}`, summary: 'find by purpose' })
   @Get('purpose/:purpose')
   findByPurpose(
     @Param('purpose') purpose: ImageType
