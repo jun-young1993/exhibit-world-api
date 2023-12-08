@@ -26,7 +26,8 @@ export class ImagesService {
   findByPurpose(purpose: ImageType) {
     return this.imageRepository.find({
       where: {
-        purpose: purpose
+        purpose: purpose,
+        isActive: true
       }
     })
   }

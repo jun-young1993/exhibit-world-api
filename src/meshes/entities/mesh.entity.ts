@@ -4,6 +4,7 @@ import { EntityHelper } from "../../utils/entity-helper";
 import { Material } from "../../materials/entities/material.entity";
 import { Geometry } from "../../geometries/entities/geometry.entity";
 import { Texture } from "../../textures/entities/texture.entity";
+import { Gltf } from "../../gltf/entities/gltf.entity";
 
 @Entity({name: 'mesh'})
 export class Mesh extends EntityHelper{
@@ -59,5 +60,13 @@ export class Mesh extends EntityHelper{
   )
   @JoinColumn()
   geometry: Geometry
+
+  @OneToOne(
+    () => Gltf,
+    (gltf) => gltf.mesh,
+    { nullable: true }
+  )
+  @JoinColumn()
+  gltf?: Gltf
 
 }

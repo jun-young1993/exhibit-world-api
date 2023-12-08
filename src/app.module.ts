@@ -11,6 +11,7 @@ import { MeshesModule } from './meshes/meshes.module';
 import { MaterialsModule } from './materials/materials.module';
 import { GeometriesModule } from './geometries/geometries.module';
 import { ImagesModule } from './images/images.module';
+import { GltfModule } from './gltf/gltf.module';
 
 
 
@@ -34,6 +35,7 @@ import { ImagesModule } from './images/images.module';
     MaterialsModule,
     GeometriesModule,
     ImagesModule,
+    GltfModule,
   ],
   controllers: [AppController],
   providers: [AppService],

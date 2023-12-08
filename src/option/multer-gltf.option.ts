@@ -5,12 +5,10 @@ import { diskStorage } from "multer";
 import { existsSync, mkdirSync } from "fs";
 import {v4 as uuid} from 'uuid';
 
-export const MulterImageOptions = {
+export const MulterGltfOptions = {
   dest: process.env.IMAGE_MULTER_DEST,
   fileFilter(req, file, cb) {
-    console.log(file.mimetype);
-
-    if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+    if (file.mimetype.match(/\/(octet-stream)$/)) {
       // Allow storage of file
       cb(null, true);
     } else {
@@ -25,7 +23,7 @@ export const MulterImageOptions = {
   },
   storage: diskStorage({
     destination: (req, file, cb) => {
-      const uploadPath = process.env.IMAGE_MULTER_DEST;
+      const uploadPath = process.env.GLTF_MULTER_DEST;
       // Create folder if doesn't exist
       if (!existsSync(uploadPath)) {
         mkdirSync(uploadPath,{
