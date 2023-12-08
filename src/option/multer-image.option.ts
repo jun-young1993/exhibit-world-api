@@ -8,11 +8,14 @@ import {v4 as uuid} from 'uuid';
 export const MulterImageOptions = {
   dest: process.env.IMAGE_MULTER_DEST,
   fileFilter(req, file, cb) {
-    if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+    console.log(file.mimetype);
+
+    if (file.mimetype.match(/\/(jpg|jpeg|png|gif|octet-stream)$/)) {
       // Allow storage of file
       cb(null, true);
     } else {
       // Reject file
+      console.log(file.originalname);
       cb(
         new HttpException(
           `Unsupported file type ${extname(file.originalname)}`,
