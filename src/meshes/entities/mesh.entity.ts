@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from '@nestjs/swagger';
 import { EntityHelper } from "../../utils/entity-helper";
 import { Material } from "../../materials/entities/material.entity";
@@ -61,7 +61,7 @@ export class Mesh extends EntityHelper{
   @JoinColumn()
   geometry: Geometry
 
-  @OneToOne(
+  @ManyToOne(
     () => Gltf,
     (gltf) => gltf.mesh,
     { nullable: true }

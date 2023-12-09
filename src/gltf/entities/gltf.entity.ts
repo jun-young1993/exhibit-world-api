@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
 
@@ -17,6 +17,10 @@ export class Gltf {
   @Column({ default: true })
   isActive: boolean;
 
+  @OneToMany(
+    () => Mesh,
+    (mesh) => mesh.gltf
+  )
   @JoinColumn()
   mesh: Mesh
 }
