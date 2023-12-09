@@ -22,6 +22,7 @@
     "mig:run": "npx typeorm migration:run"
   },
   "dependencies": {
+    "@gltf-transform/extensions": "^3.9.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^9.0.0",

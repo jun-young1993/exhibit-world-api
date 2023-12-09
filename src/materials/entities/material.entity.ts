@@ -44,4 +44,5 @@ export class Material extends EntityHelper{
   )
   @JoinColumn()
   texture?: Texture
+
 }

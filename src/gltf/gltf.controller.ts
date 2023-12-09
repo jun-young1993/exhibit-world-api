@@ -7,6 +7,7 @@ import { ImageType } from "../images/entities/image.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Express, Response } from "express";
 import { MulterGltfOptions } from "../option/multer-gltf.option";
+import { NodeIO } from "@gltf-transform/core";
 
 @ApiTags('Gltf')
 @Controller({
@@ -59,6 +60,18 @@ export class GltfController {
     return this.gltfService.findAll();
   }
 
+  @ApiOperation( {summary: 'test' })
+  @Get('test')
+  async test(){
+    const io = new NodeIO();
+    const document = await io.read('/Users/junyoungkim/Downloads/blank_canvas.glb');
+    const root = document.getRoot();
+    const meshes = root.listMeshes();
+    const mesh = meshes[0];
+    const uv = mesh.listPrimitives()[0];
+    console.log(uv);
+  }
+
   @ApiOperation( {summary: 'find a gltf entity' })
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -74,5 +87,6 @@ export class GltfController {
     const gltf = await this.gltfService.findOne(id);
     return response.sendFile(gltf.path);
   }
+
 
 }
