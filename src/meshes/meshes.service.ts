@@ -24,7 +24,7 @@ export class MeshesService {
 
   findAllBulk() {
     return this.meshRepository.find({
-        relations: ['material','geometry', 'material.texture', 'material.texture.image']
+        relations: ['material','geometry', 'material.texture', 'material.texture.image','gltf']
       })
   }
 
