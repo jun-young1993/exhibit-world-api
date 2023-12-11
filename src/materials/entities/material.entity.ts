@@ -7,6 +7,7 @@ import { Mesh } from "../../meshes/entities/mesh.entity";
 import { Geometry } from "../../geometries/entities/geometry.entity";
 import { Texture } from "../../textures/entities/texture.entity";
 import { optionalRequire } from "@nestjs/core/helpers/optional-require";
+import { Association } from "../../associations/entities/association.entity";
 
 export enum MaterialType {
   MeshBasicMaterial = 'MeshBasicMaterial'
@@ -32,17 +33,19 @@ export class Material extends EntityHelper{
   opacity: number;
 
   @OneToOne(
-    () => Mesh,
-    (mesh) => mesh.material
-  )
-  mesh: Mesh;
-
-  @OneToOne(
     () => Texture,
     (texture) => texture.material,
     { nullable: true }
   )
   @JoinColumn()
   texture?: Texture
+
+  @ManyToOne(
+    ()=> Association,
+    (association) => association.material
+  )
+  @JoinColumn()
+  association: Association
+
 
 }

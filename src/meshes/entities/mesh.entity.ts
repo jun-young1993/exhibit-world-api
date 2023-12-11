@@ -5,6 +5,8 @@ import { Material } from "../../materials/entities/material.entity";
 import { Geometry } from "../../geometries/entities/geometry.entity";
 import { Texture } from "../../textures/entities/texture.entity";
 import { Gltf } from "../../gltf/entities/gltf.entity";
+import { Group } from "../../groups/entities/group.entity";
+import { Association } from "../../associations/entities/association.entity";
 
 @Entity({name: 'mesh'})
 export class Mesh extends EntityHelper{
@@ -48,11 +50,11 @@ export class Mesh extends EntityHelper{
   quaternionW: number;
 
   @OneToOne(
-    () => Material,
-    (material) => material.mesh
+    () => Association,
+    (association) => association.mesh
   )
   @JoinColumn()
-  material: Material
+  association: Association
 
   @OneToOne(
     () => Geometry,
@@ -68,5 +70,12 @@ export class Mesh extends EntityHelper{
   )
   @JoinColumn()
   gltf?: Gltf
+
+  @ManyToOne(
+    ()=> Group,
+    (group) => group.mesh
+  )
+  @JoinColumn()
+  group: Group
 
 }

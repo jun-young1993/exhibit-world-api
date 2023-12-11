@@ -12,6 +12,8 @@ import { MaterialsModule } from './materials/materials.module';
 import { GeometriesModule } from './geometries/geometries.module';
 import { ImagesModule } from './images/images.module';
 import { GltfModule } from './gltf/gltf.module';
+import { GroupsModule } from './groups/groups.module';
+import { AssociationsModule } from './associations/associations.module';
 
 
 
@@ -36,6 +38,8 @@ import { GltfModule } from './gltf/gltf.module';
     GeometriesModule,
     ImagesModule,
     GltfModule,
+    GroupsModule,
+    AssociationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
