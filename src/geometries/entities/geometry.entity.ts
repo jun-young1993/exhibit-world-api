@@ -22,19 +22,18 @@ export class Geometry extends EntityHelper{
     enum: GeometryType,
     default: GeometryType.Box, // Default to BoxGeometry if not specified
   })
-  @Column()
   type: GeometryType;
 
-  @Column('float',{ nullable: true, default: 0, scale: 5 })
+  @Column('float',{ nullable: true, default: 2, scale: 5 })
   width: number;
 
-  @Column('float',{ nullable: true, default: 0, scale: 5 })
+  @Column('float',{ nullable: true, default: 2, scale: 5 })
   height: number;
 
-  @Column('float',{ nullable: true, default: 0, scale: 5 })
+  @Column('float',{ nullable: true, default: 2, scale: 5 })
   depth: number;
 
-  @Column('float',{ nullable: true, default: 0, scale: 5 })
+  @Column('float',{ nullable: true, default: 2, scale: 5 })
   radius: number;
 
   @Column({ nullable: true, default: 0 })

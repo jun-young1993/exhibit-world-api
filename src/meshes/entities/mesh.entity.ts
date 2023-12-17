@@ -19,46 +19,48 @@ export class Mesh extends EntityHelper{
   })
   type?: string;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   positionX: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   positionY: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   positionZ: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   rotationX: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   rotationY: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   rotationZ: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   quaternionX: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   quaternionY: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   quaternionZ: number;
 
-  @Column('float',{scale: 5})
+  @Column('float',{scale: 5, default: 0})
   quaternionW: number;
 
   @OneToOne(
     () => Association,
-    (association) => association.mesh
+    (association) => association.mesh,
+    {eager: true}
   )
   @JoinColumn()
   association: Association
 
   @OneToOne(
     () => Geometry,
-    (geometry) => geometry.mesh
+    (geometry) => geometry.mesh,
+    {eager: true}
   )
   @JoinColumn()
   geometry: Geometry
@@ -66,7 +68,7 @@ export class Mesh extends EntityHelper{
   @ManyToOne(
     () => Gltf,
     (gltf) => gltf.mesh,
-    { nullable: true }
+    { nullable: true, eager: true }
   )
   @JoinColumn()
   gltf?: Gltf

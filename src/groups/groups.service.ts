@@ -1,26 +1,87 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group.dto';
+import { Mesh } from "../meshes/entities/mesh.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Geometry } from "../geometries/entities/geometry.entity";
+import { Material } from "../materials/entities/material.entity";
+import { Group } from "../groups/entities/group.entity";
+import { CreateGroupDto } from "../groups/dto/create-group.dto";
+import { Association } from "../associations/entities/association.entity";
 
 @Injectable()
 export class GroupsService {
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  constructor(
+    @InjectRepository(Mesh)
+    private readonly meshRepository: Repository<Mesh>,
+    @InjectRepository(Geometry)
+    private readonly geometryRepository: Repository<Geometry>,
+    @InjectRepository(Material)
+    private readonly materialRepository: Repository<Material>,
+    @InjectRepository(Association)
+    private readonly associationRepository: Repository<Association>,
+    @InjectRepository(Group)
+    private readonly groupRepository: Repository<Group>
+  ) {}
+
+  findOne(id: string): Promise<Group>
+  {
+    return this.groupRepository.findOneBy({
+      id: id
+    })
   }
 
-  findAll() {
-    return `This action returns all groups`;
+  findAll(): Promise<Group[]>
+  {
+    return this.groupRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
-  }
+  async create(createGroupDto: CreateGroupDto): Promise<Group>
+  {
+    const group = await this.groupRepository.save(
+      this.groupRepository.create()
+    );
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
-  }
+    const geometry = await this.geometryRepository.save(createGroupDto.geometry);
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+    const association = await this.associationRepository.save({});
+    createGroupDto.material.association = association;
+    await this.materialRepository.save(createGroupDto.material)
+
+    const createMeshDto = createGroupDto.mesh;
+    createMeshDto.geometry = geometry;
+    createMeshDto.association = association;
+    createMeshDto.group = group;
+    const mesh = await this.meshRepository.save(createMeshDto);
+
+    await this.meshRepository.create(mesh);
+
+    return this.findOne(group.id);
+  };
+
+  async createDefault(): Promise<Group>
+  {
+    const group = new Group();
+    const savedGroup = await group.save();
+
+    const geometry = new Geometry();
+    const savedGeometry = await geometry.save();
+
+    const association = new Association();
+    const savedAssociation = await association.save();
+
+    const materialCount = 6;
+    for(let index=0; index<materialCount; index++){
+      const material = new Material();
+      material.association = savedAssociation;
+      await material.save();
+    }
+
+    const mesh = new Mesh();
+    mesh.group = savedGroup;
+    mesh.association = savedAssociation;
+    mesh.geometry = savedGeometry;
+    await mesh.save();
+
+    return this.findOne(savedGroup.id);
   }
 }

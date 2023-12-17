@@ -3,6 +3,8 @@ import { IsNotEmpty, IsNumber } from "class-validator";
 import { CreateGeometryDto } from "../../geometries/dto/create-geometry.dto";
 import { Geometry } from "../../geometries/entities/geometry.entity";
 import { Material } from "../../materials/entities/material.entity";
+import { Group } from "../../groups/entities/group.entity";
+import { Association } from "../../associations/entities/association.entity";
 
 
 export class CreateMeshDto {
@@ -56,7 +58,10 @@ export class CreateMeshDto {
   @IsNumber()
   quaternionW: number;
 
+  group!: Group
+
   geometry!: Geometry
 
-  material!: Material
+  association!: Association
+
 }

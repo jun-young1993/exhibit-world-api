@@ -39,7 +39,7 @@ import { AssociationsModule } from './associations/associations.module';
     ImagesModule,
     GltfModule,
     GroupsModule,
-    AssociationsModule,
+    AssociationsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,7 +11,8 @@ export class Group extends EntityHelper{
 
   @OneToMany(
     () => Mesh,
-    (mesh) => mesh.group
+    (mesh) => mesh.group,
+    {eager: true}
   )
   mesh: []
 }
