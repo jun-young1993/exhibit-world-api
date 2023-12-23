@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch } from "@nestjs/common";
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Group } from "./entities/group.entity";
+import { UpdateGroupDto } from "./dto/update-group.dto";
 
 @ApiTags("Groups")
 @Controller({
@@ -54,5 +55,13 @@ export class GroupsController {
     return this.groupsService.findOne(id);
   }
 
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Update a group',
+    description: 'Update a group.',
+  })
+  update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
+    return this.groupsService.update(id, updateGroupDto)
+  }
 
 }

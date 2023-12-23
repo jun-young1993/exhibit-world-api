@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Mesh } from "../meshes/entities/mesh.entity";
-import { Repository } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Geometry } from "../geometries/entities/geometry.entity";
 import { Material } from "../materials/entities/material.entity";
 import { Group } from "../groups/entities/group.entity";
 import { CreateGroupDto } from "../groups/dto/create-group.dto";
 import { Association } from "../associations/entities/association.entity";
+import { UpdateGroupDto } from "./dto/update-group.dto";
 
 @Injectable()
 export class GroupsService {
@@ -83,5 +84,10 @@ export class GroupsService {
     await mesh.save();
 
     return this.findOne(savedGroup.id);
+  }
+
+  update(id: string, updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
+  {
+    return this.groupRepository.update({id: id},updateGroupDto);
   }
 }
