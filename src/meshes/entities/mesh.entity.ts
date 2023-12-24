@@ -49,10 +49,19 @@ export class Mesh extends EntityHelper{
   @Column('float',{scale: 5, default: 0})
   quaternionW: number;
 
+  @Column('float',{scale: 5, default: 2})
+  scaleX: number;
+
+  @Column('float',{scale: 5, default: 2})
+  scaleY: number;
+
+  @Column('float',{scale: 5, default: 2})
+  scaleZ: number;
+
   @OneToOne(
     () => Association,
     (association) => association.mesh,
-    {eager: true}
+    {eager: true, cascade: true, onDelete: "CASCADE"}
   )
   @JoinColumn()
   association: Association
@@ -60,7 +69,7 @@ export class Mesh extends EntityHelper{
   @OneToOne(
     () => Geometry,
     (geometry) => geometry.mesh,
-    {eager: true}
+    {eager: true, cascade: true, onDelete: "CASCADE"}
   )
   @JoinColumn()
   geometry: Geometry
@@ -68,7 +77,7 @@ export class Mesh extends EntityHelper{
   @ManyToOne(
     () => Gltf,
     (gltf) => gltf.mesh,
-    { nullable: true, eager: true }
+    { nullable: true, eager: true, cascade: true, onDelete: "CASCADE"}
   )
   @JoinColumn()
   gltf?: Gltf

@@ -86,8 +86,25 @@ export class GroupsService {
     return this.findOne(savedGroup.id);
   }
 
-  update(id: string, updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
-  {
-    return this.groupRepository.update({id: id},updateGroupDto);
+  update(id: string, updateGroupDto: UpdateGroupDto): Promise<UpdateResult> {
+    return this.groupRepository.update({ id: id }, updateGroupDto)
+  }
+
+  async remove(id: string) {
+    const group = await this.findOne(id);
+
+    for (const mesh of group.mesh) {
+      const association = mesh.association;
+      const geometry = mesh.geometry;
+      const materials = association.material;
+      await this.materialRepository.remove(materials);
+      await this.geometryRepository.remove(geometry);
+      await this.associationRepository.remove(association);
+    }
+
+    await this.meshRepository.remove(group.mesh);
+    await this.groupRepository.remove(group);
+    group.id = id;
+    return group;
   }
 }

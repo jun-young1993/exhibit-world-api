@@ -18,7 +18,7 @@ export class Association extends BaseEntity {
   @OneToMany(
     () => Material,
     (material) => material.association,
-    {eager: true}
+    {eager: true, cascade: true, onDelete: "CASCADE"}
   )
   material: Material[]
 }

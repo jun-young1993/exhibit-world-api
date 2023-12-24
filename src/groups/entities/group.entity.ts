@@ -39,10 +39,19 @@ export class Group extends EntityHelper{
   @Column('float',{scale: 5, default: 0})
   quaternionW: number;
 
+  @Column('float',{scale: 5, default: 2})
+  scaleX: number;
+
+  @Column('float',{scale: 5, default: 2})
+  scaleY: number;
+
+  @Column('float',{scale: 5, default: 2})
+  scaleZ: number;
+
   @OneToMany(
     () => Mesh,
     (mesh) => mesh.group,
-    {eager: true}
+    { eager: true, cascade: true, onDelete: "CASCADE" }
   )
-  mesh: []
+  mesh: Mesh[]
 }

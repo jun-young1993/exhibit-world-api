@@ -36,7 +36,4 @@ export class MeshesService {
     return this.meshRepository.update({ id: id }, updateMeshDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} mesh`;
-  }
 }

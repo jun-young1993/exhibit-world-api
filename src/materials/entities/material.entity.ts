@@ -35,7 +35,7 @@ export class Material extends EntityHelper{
   @OneToOne(
     () => Texture,
     (texture) => texture.material,
-    { nullable: true, eager: true }
+    { nullable: true, eager: true, onDelete: "CASCADE" }
   )
   @JoinColumn()
   texture?: Texture

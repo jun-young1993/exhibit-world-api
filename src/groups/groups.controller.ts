@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Patch, Delete } from "@nestjs/common";
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -62,6 +62,17 @@ export class GroupsController {
   })
   update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
     return this.groupsService.update(id, updateGroupDto)
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a group',
+    description: 'Delete a group.',
+  })
+  async remove(@Param('id') id: string) {
+
+    return this.groupsService.remove(id);
+
   }
 
 }

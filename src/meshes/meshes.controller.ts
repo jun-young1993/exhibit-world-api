@@ -41,8 +41,5 @@ export class MeshesController {
     return this.meshesService.update(id, updateMeshDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.meshesService.remove(+id);
-  }
+
 }

@@ -51,4 +51,19 @@ export class CreateDefaultGroupDto {
   @IsNotEmpty()
   @IsNumber()
   quaternionW: number;
+
+  @ApiProperty({example: 0, description: 'The group of the scale x'})
+  @IsNotEmpty()
+  @IsNumber()
+  scaleX: number;
+
+  @ApiProperty({example: 0, description: 'The group of the scale y'})
+  @IsNotEmpty()
+  @IsNumber()
+  scaleY: number;
+
+  @ApiProperty({example: 0, description: 'The group of the scale z'})
+  @IsNotEmpty()
+  @IsNumber()
+  scaleZ: number;
 }
