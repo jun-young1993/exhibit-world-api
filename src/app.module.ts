@@ -14,6 +14,7 @@ import { ImagesModule } from './images/images.module';
 import { GltfModule } from './gltf/gltf.module';
 import { GroupsModule } from './groups/groups.module';
 import { AssociationsModule } from './associations/associations.module';
+import { StorageModule } from './storage/storage.module';
 
 
 
@@ -39,7 +40,8 @@ import { AssociationsModule } from './associations/associations.module';
     ImagesModule,
     GltfModule,
     GroupsModule,
-    AssociationsModule
+    AssociationsModule,
+    StorageModule
   ],
   controllers: [AppController],
   providers: [AppService],

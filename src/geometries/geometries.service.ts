@@ -9,11 +9,10 @@ import { Repository } from "typeorm";
 export class GeometriesService {
   constructor(
     @InjectRepository(Geometry)
-    private readonly geometryRepository: Repository<Geometry>
+    private readonly geometryRepository: Repository<Geometry>,
   ) {
   }
   create(createGeometryDto: CreateGeometryDto) {
-    console.log(createGeometryDto);
     return this.geometryRepository.save(
       this.geometryRepository.create(createGeometryDto)
     );
@@ -23,8 +22,10 @@ export class GeometriesService {
     return `This action returns all geometries`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} geometry`;
+  findOne(id: string) {
+    return this.geometryRepository.findOneBy({
+      id: id
+    })
   }
 
   update(id: string, updateGeometryDto: UpdateGeometryDto) {
@@ -34,4 +35,5 @@ export class GeometriesService {
   remove(id: number) {
     return `This action removes a #${id} geometry`;
   }
+
 }

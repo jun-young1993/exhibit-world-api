@@ -9,7 +9,7 @@ import { Association } from "../../associations/entities/association.entity";
 
 export class CreateMaterialDto {
 
-  @ApiProperty({example: MaterialType.MeshBasicMaterial, description: 'The type of the Material'})
+  @ApiProperty({example: MaterialType.BASIC, description: 'The type of the Material'})
   type: MaterialType
 
   @ApiProperty({ example: '#FFFFFF', description: 'Color of the material' })

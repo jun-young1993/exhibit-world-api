@@ -7,6 +7,8 @@ import { Texture } from "../../textures/entities/texture.entity";
 import { Gltf } from "../../gltf/entities/gltf.entity";
 import { Group } from "../../groups/entities/group.entity";
 import { Association } from "../../associations/entities/association.entity";
+import { Mesh as ThreeMesh, Object3D as ThreeObject3D } from "three";
+import { isArray } from "lodash";
 
 @Entity({name: 'mesh'})
 export class Mesh extends EntityHelper{
@@ -88,5 +90,42 @@ export class Mesh extends EntityHelper{
   )
   @JoinColumn()
   group: Group
+
+  setEntity(object3D: ThreeMesh){
+    this.id = object3D.uuid;
+
+    this.type = object3D.type;
+
+    this.positionX = object3D.position.x;
+    this.positionY = object3D.position.y;
+    this.positionZ = object3D.position.z;
+
+    this.rotationX = object3D.rotation.x;
+    this.rotationY = object3D.rotation.y;
+    this.rotationZ = object3D.rotation.z;
+
+    this.quaternionX = object3D.quaternion.x;
+    this.quaternionY = object3D.quaternion.y;
+    this.quaternionZ = object3D.quaternion.z;
+    this.quaternionW = object3D.quaternion.w;
+
+    this.scaleX = object3D.scale.x;
+    this.scaleY = object3D.scale.y;
+    this.scaleZ = object3D.scale.z;
+
+    const geometry = new Geometry();
+    geometry.setEntity(object3D.geometry);
+    this.geometry = geometry;
+    // this.association =
+    const association = new Association();
+    if(isArray(object3D.material)){
+      association.setEntity(object3D.material);
+    }else{
+      association.setEntity([object3D.material]);
+    }
+
+    this.association = association;
+
+  }
 
 }

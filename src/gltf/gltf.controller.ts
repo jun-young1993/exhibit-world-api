@@ -79,13 +79,13 @@ export class GltfController {
   }
 
   @ApiOperation( {summary: 'find a gltf file' })
-  @Get('file/:id')
+  @Get('file/:uuid')
   async findOneFile(
-    @Param('id') id: string,
-    @Res() response: Response
+    @Param('uuid') uuid: string,
+    @Res() response
   ) {
-    const gltf = await this.gltfService.findOne(id);
-    return response.sendFile(gltf.path);
+    const gltf = await this.gltfService.findOne(uuid);
+    response.sendFile(gltf.path);
   }
 
 

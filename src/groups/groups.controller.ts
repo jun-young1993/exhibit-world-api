@@ -4,6 +4,7 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Group } from "./entities/group.entity";
 import { UpdateGroupDto } from "./dto/update-group.dto";
+import { GltfService } from "../gltf/gltf.service";
 
 @ApiTags("Groups")
 @Controller({
@@ -12,7 +13,8 @@ import { UpdateGroupDto } from "./dto/update-group.dto";
 })
 export class GroupsController {
   constructor(
-    private readonly groupsService: GroupsService
+    private readonly groupsService: GroupsService,
+    private readonly gltfService: GltfService
   ) {}
 
   @Post()
@@ -33,6 +35,16 @@ export class GroupsController {
   async createDefault(): Promise<Group>
   {
     return this.groupsService.createDefault();
+  }
+
+  @Post('/gltf/:uuid')
+  @ApiOperation({
+    summary: 'Create a new gltf group',
+    description: 'Creates a new gltf group with the specified parameters.'
+  })
+  async createGltf(@Param('uuid') uuid: string) {
+    const gltf = await this.gltfService.findOneGltf(uuid);
+    return await this.groupsService.createGltf(gltf);
   }
 
   @Get()

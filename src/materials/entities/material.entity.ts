@@ -4,13 +4,15 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToOne
 import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
-import { Geometry } from "../../geometries/entities/geometry.entity";
+import { Geometry, GeometryType } from "../../geometries/entities/geometry.entity";
 import { Texture } from "../../textures/entities/texture.entity";
 import { optionalRequire } from "@nestjs/core/helpers/optional-require";
 import { Association } from "../../associations/entities/association.entity";
+import { Color, Material as ThreeMaterial } from "three";
 
 export enum MaterialType {
-  MeshBasicMaterial = 'MeshBasicMaterial'
+  BASIC = 'MeshBasicMaterial',
+  STANDARD = 'MeshStandardMaterial'
 }
 
 @Entity('material')
@@ -22,7 +24,7 @@ export class Material extends EntityHelper{
   @Column({
     type: 'enum',
     enum: MaterialType,
-    default: MaterialType.MeshBasicMaterial, // 기본 MaterialType 설정
+    default: MaterialType.BASIC, // 기본 MaterialType 설정
   })
   type: MaterialType;
 
@@ -47,5 +49,17 @@ export class Material extends EntityHelper{
   @JoinColumn()
   association: Association
 
+  setEntity(material: ThreeMaterial){
+
+    this.id = material.uuid;
+    this.type = MaterialType[Object.keys(MaterialType)
+      .find(key => MaterialType[key as keyof typeof MaterialType] === material.type)
+      ];
+    if('color' in material){
+      const color = material.color as Color;
+      this.color = `#${color.getHexString()}`;
+    }
+    this.opacity = material.opacity;
+  }
 
 }

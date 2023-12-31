@@ -7,6 +7,7 @@ import { Gltf } from "./entities/gltf.entity";
 @Module({
   imports: [TypeOrmModule.forFeature([Gltf])],
   controllers: [GltfController],
-  providers: [GltfService]
+  providers: [GltfService],
+  exports: [GltfService]
 })
 export class GltfModule {}

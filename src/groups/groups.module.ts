@@ -7,10 +7,15 @@ import { Mesh } from "../meshes/entities/mesh.entity";
 import { Geometry } from "../geometries/entities/geometry.entity";
 import { Material } from "../materials/entities/material.entity";
 import { Association } from "../associations/entities/association.entity";
+import { GltfModule } from "../gltf/gltf.module";
+import { GltfService } from "../gltf/gltf.service";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Group,Mesh,Geometry,Material,Association])],
+  imports: [
+    TypeOrmModule.forFeature([Group,Mesh,Geometry,Material,Association]),
+    GltfModule
+  ],
   controllers: [GroupsController],
-  providers: [GroupsService]
+  providers: [GroupsService],
 })
 export class GroupsModule {}

@@ -8,6 +8,7 @@ import { Group } from "../groups/entities/group.entity";
 import { CreateGroupDto } from "../groups/dto/create-group.dto";
 import { Association } from "../associations/entities/association.entity";
 import { UpdateGroupDto } from "./dto/update-group.dto";
+import { GLTF } from "node-three-gltf";
 
 @Injectable()
 export class GroupsService {
@@ -83,6 +84,23 @@ export class GroupsService {
     mesh.geometry = savedGeometry;
     await mesh.save();
 
+    return this.findOne(savedGroup.id);
+  }
+
+
+  async createGltf(gltf: GLTF): Promise<Group>
+  {
+
+    const group = new Group();
+    group.setEntity(gltf.scene);
+    const savedGroup = await group.save();
+
+
+    // group.mesh.forEach((mesh) => {
+    //   const savedMesh = mesh.save();
+    //   const savedAssociation = mesh.association.save();
+    // })
+    // return group;
     return this.findOne(savedGroup.id);
   }
 

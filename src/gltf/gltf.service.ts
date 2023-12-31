@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGltfDto } from './dto/create-gltf.dto';
-import { UpdateGltfDto } from './dto/update-gltf.dto';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Gltf } from "./entities/gltf.entity";
 import { Repository } from "typeorm";
+import * as fs from "fs";
+import { DRACOLoader, GLTF, GLTFLoader } from "node-three-gltf";
 
 @Injectable()
 export class GltfService {
@@ -31,11 +32,21 @@ export class GltfService {
     });
   }
 
-  update(id: number, updateGltfDto: UpdateGltfDto) {
-    return `This action updates a #${id} gltf`;
-  }
+  async findOneGltf(uuid: string): Promise<GLTF> {
+    const gltf = await this.findOne(uuid);
+    return new Promise((resolve, reject) => {
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.setDRACOLoader(new DRACOLoader());
+      gltfLoader.load(gltf.path,
+        (gltf) => {
+          resolve(gltf);
+        },
+        () => {
 
-  remove(id: number) {
-    return `This action removes a #${id} gltf`;
+        },
+        reject
+      )
+    })
+
   }
 }
