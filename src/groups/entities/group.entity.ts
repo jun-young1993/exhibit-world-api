@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
 import { GLTF } from "node-three-gltf";
 import { Mesh as ThreeMesh, Object3D as ThreeObject3D } from "three";
+import { GithubStorage } from "../../github-storage/entities/github-storage.entity";
 
 
 @Entity({name: 'group'})
@@ -57,6 +58,13 @@ export class Group extends EntityHelper{
     { eager: true, cascade: true, onDelete: "CASCADE" }
   )
   mesh: Mesh[]
+
+  @OneToOne(
+    () => GithubStorage,
+    (githubStorage) => githubStorage.group,
+    {eager: true, cascade: true, onDelete: "CASCADE"}
+  )
+  githubStorage: GithubStorage
 
   setEntity(group: GLTF['scene']){
     this.id = group.uuid;

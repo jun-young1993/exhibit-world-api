@@ -1,3 +1,4 @@
+import { GithubStorageConfigName } from "./github-storage.config";
 
 export type AppConfig = {
   nodeEnv: string;
@@ -25,7 +26,21 @@ export type DatabaseConfig = {
   cert?: string;
 };
 
+export interface GithubConfig  {
+  token: string;
+  repo: string;
+  owner: string;
+  version: string;
+  base_url: string;
+  endpoint: {
+    content: string
+  }
+}
+
+export interface GithubStorageConfig extends GithubConfig{}
+
 export type AllConfigType = {
   app: AppConfig;
   database: DatabaseConfig;
+  [GithubStorageConfigName]: GithubStorageConfig;
 };

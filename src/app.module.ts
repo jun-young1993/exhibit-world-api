@@ -15,6 +15,9 @@ import { GltfModule } from './gltf/gltf.module';
 import { GroupsModule } from './groups/groups.module';
 import { AssociationsModule } from './associations/associations.module';
 import { StorageModule } from './storage/storage.module';
+import { GithubStorageModule } from './github-storage/github-storage.module';
+import { GithubModule } from './github/github.module';
+import githubStorageConfig from "./config/github-storage.config";
 
 
 
@@ -25,6 +28,7 @@ import { StorageModule } from './storage/storage.module';
       load: [
         databaseConfig,
         appConfig,
+        githubStorageConfig
       ],
       envFilePath:['.env']
     }),
@@ -41,7 +45,9 @@ import { StorageModule } from './storage/storage.module';
     GltfModule,
     GroupsModule,
     AssociationsModule,
-    StorageModule
+    StorageModule,
+    GithubStorageModule,
+    GithubModule
   ],
   controllers: [AppController],
   providers: [AppService],
