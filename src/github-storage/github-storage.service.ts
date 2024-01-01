@@ -24,10 +24,14 @@ export class GithubStorageService {
     this.options = this.configService.get(GithubConfigType.STORAGE);
   }
 
-  async test() {
-    return await this.httpService.axiosRef.get(
-      `${this.options.endpoint.content}/2024/1/1/010c8c4d-39e9-4a14-a447-02715c37f745.glb`
+  async findOne(id: string) {
+    const githubStorage = await this.githubStorageRepository.findOneBy({ id: id })
+    const content = await this.httpService.axiosRef.get(
+      `${this.options.endpoint.content}/${githubStorage.path}`
     )
+    return {
+      download_url: content.data.download_url
+    }
   }
 
   findAll() {

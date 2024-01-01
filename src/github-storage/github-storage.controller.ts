@@ -21,14 +21,15 @@ export class GithubStorageController {
     return this.githubStorageService.findAll();
   }
 
-  @Get('/test')
-  async test() {
-    const test = await this.githubStorageService.test();
-    console.log(test);
-
+  @Get(':uuid')
+  @ApiOperation({
+    summary: 'Retrieve a github storage',
+    description: 'Retrieves a existing github storage.',
+  })
+  findOne(@Param('uuid') uuid: string)
+  {
+    return this.githubStorageService.findOne(uuid);
   }
-
-
 
   @Put()
   @ApiOperation({ summary: `Upload a new GLTF file`} )
