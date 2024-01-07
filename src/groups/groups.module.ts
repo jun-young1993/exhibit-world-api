@@ -17,5 +17,6 @@ import { GltfService } from "../gltf/gltf.service";
   ],
   controllers: [GroupsController],
   providers: [GroupsService],
+  exports: [GroupsService]
 })
 export class GroupsModule {}

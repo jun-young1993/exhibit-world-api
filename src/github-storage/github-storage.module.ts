@@ -7,11 +7,13 @@ import { HttpModule } from "@nestjs/axios";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GithubStorage } from "./entities/github-storage.entity";
+import { GroupsModule } from "../groups/groups.module";
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([GithubStorage]),
     GithubModule,
+    GroupsModule,
     HttpModule.registerAsync({
       useFactory: async function (configService : ConfigService){
         const githubConfig = configService.get(GithubConfigType.STORAGE);

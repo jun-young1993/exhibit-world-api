@@ -4,6 +4,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Express, Response } from "express";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterGltfOptions } from "../option/multer-gltf.option";
+import { GroupsService } from "../groups/groups.service";
 
 @ApiTags('Github-Storage')
 @Controller({
@@ -14,6 +15,7 @@ export class GithubStorageController {
 
   constructor(
     private readonly githubStorageService: GithubStorageService,
+
   ) {}
 
   @Get()
@@ -31,7 +33,7 @@ export class GithubStorageController {
     return this.githubStorageService.findOne(uuid);
   }
 
-  @Put()
+  @Post()
   @ApiOperation({ summary: `Upload a new GLTF file`} )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -49,9 +51,7 @@ export class GithubStorageController {
   async gltfUpload(
     @UploadedFile() file: Express.Multer.File,
   ) {
-
-    const uploaded = await this.githubStorageService.upload(file);
-    // console.log(uploaded);
+    return await this.githubStorageService.upload(file);
   }
 
 }
