@@ -17,6 +17,7 @@ import { AssociationsModule } from './associations/associations.module';
 import { StorageModule } from './storage/storage.module';
 import { GithubStorageModule } from './github-storage/github-storage.module';
 import { GithubModule } from './github/github.module';
+import { UsersModule } from './users/users.module';
 import githubStorageConfig from "./config/github-storage.config";
 
 
@@ -47,7 +48,8 @@ import githubStorageConfig from "./config/github-storage.config";
     AssociationsModule,
     StorageModule,
     GithubStorageModule,
-    GithubModule
+    GithubModule,
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

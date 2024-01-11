@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAssociationDto } from './dto/create-association.dto';
 import { UpdateAssociationDto } from './dto/update-association.dto';
+import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Injectable()
 export class AssociationsService {
@@ -23,4 +24,10 @@ export class AssociationsService {
   remove(id: number) {
     return `This action removes a #${id} association`;
   }
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  updatedAt: Date;
 }
