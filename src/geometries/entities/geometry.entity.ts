@@ -2,7 +2,6 @@ import { EntityHelper } from "../../utils/entity-helper";
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import { Mesh } from "../../meshes/entities/mesh.entity";
-import { IsUUID } from "class-validator";
 import { BufferAttribute, BufferGeometry, NormalBufferAttributes } from "three";
 import * as fs from "fs";
 
@@ -82,7 +81,7 @@ export class Geometry extends EntityHelper{
         const vertices = this.attributes.position.array;
 
         const target = `${dest}/position/${this.id}.bin`;
-        console.log()
+        
         try{
           fs.mkdirSync(`${dest}/position`, { recursive: true});
           fs.writeFileSync(target, Buffer.from(vertices.buffer).toString());
