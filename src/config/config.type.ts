@@ -1,4 +1,5 @@
 import { GithubStorageConfigName } from "./github-storage.config";
+import { JwtModuleOptions } from "@nestjs/jwt";
 
 export type AppConfig = {
   nodeEnv: string;
@@ -37,10 +38,13 @@ export interface GithubConfig  {
   }
 }
 
+export interface JwtConfig extends JwtModuleOptions{}
+
 export interface GithubStorageConfig extends GithubConfig{}
 
 export type AllConfigType = {
   app: AppConfig;
   database: DatabaseConfig;
+  jwt: JwtConfig,
   [GithubStorageConfigName]: GithubStorageConfig;
 };

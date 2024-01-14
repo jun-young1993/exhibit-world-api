@@ -9,6 +9,7 @@ import { CreateGroupDto } from "../groups/dto/create-group.dto";
 import { Association } from "../associations/entities/association.entity";
 import { UpdateGroupDto } from "./dto/update-group.dto";
 import { GLTF } from "node-three-gltf";
+import { GithubStorage } from "../github-storage/entities/github-storage.entity";
 
 @Injectable()
 export class GroupsService {
@@ -22,7 +23,9 @@ export class GroupsService {
     @InjectRepository(Association)
     private readonly associationRepository: Repository<Association>,
     @InjectRepository(Group)
-    private readonly groupRepository: Repository<Group>
+    private readonly groupRepository: Repository<Group>,
+    @InjectRepository(GithubStorage)
+    private readonly githubStorageRepository: Repository<GithubStorage>
   ) {}
 
   findOne(id: string): Promise<Group>
@@ -119,6 +122,10 @@ export class GroupsService {
       await this.geometryRepository.remove(geometry);
       await this.associationRepository.remove(association);
     }
+
+  if(group.githubStorage){
+    await this.githubStorageRepository.remove(group.githubStorage)
+  }
 
     await this.meshRepository.remove(group.mesh);
     await this.groupRepository.remove(group);

@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GithubStorage } from "./entities/github-storage.entity";
 import { GroupsModule } from "../groups/groups.module";
+import { AllConfigType } from "../config/config.type";
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { GroupsModule } from "../groups/groups.module";
     GithubModule,
     GroupsModule,
     HttpModule.registerAsync({
-      useFactory: async function (configService : ConfigService){
+      useFactory: async function (configService : ConfigService<AllConfigType>){
         const githubConfig = configService.get(GithubConfigType.STORAGE);
         return {
           baseURL: githubConfig.base_url,

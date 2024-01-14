@@ -18,7 +18,9 @@ import { StorageModule } from './storage/storage.module';
 import { GithubStorageModule } from './github-storage/github-storage.module';
 import { GithubModule } from './github/github.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import githubStorageConfig from "./config/github-storage.config";
+import JwtConfig from "./config/jwt.config";
 
 
 
@@ -29,7 +31,8 @@ import githubStorageConfig from "./config/github-storage.config";
       load: [
         databaseConfig,
         appConfig,
-        githubStorageConfig
+        githubStorageConfig,
+        JwtConfig
       ],
       envFilePath:['.env']
     }),
@@ -49,7 +52,8 @@ import githubStorageConfig from "./config/github-storage.config";
     StorageModule,
     GithubStorageModule,
     GithubModule,
-    UsersModule
+    UsersModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

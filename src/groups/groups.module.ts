@@ -9,10 +9,11 @@ import { Material } from "../materials/entities/material.entity";
 import { Association } from "../associations/entities/association.entity";
 import { GltfModule } from "../gltf/gltf.module";
 import { GltfService } from "../gltf/gltf.service";
+import { GithubStorage } from "../github-storage/entities/github-storage.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Group,Mesh,Geometry,Material,Association]),
+    TypeOrmModule.forFeature([Group,Mesh,Geometry,Material,Association, GithubStorage]),
     GltfModule
   ],
   controllers: [GroupsController],
