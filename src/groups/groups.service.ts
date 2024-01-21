@@ -130,6 +130,7 @@ export class GroupsService {
     await this.meshRepository.remove(group.mesh);
     await this.groupRepository.remove(group);
     group.id = id;
+
     return group;
   }
 }

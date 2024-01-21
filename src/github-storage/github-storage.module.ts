@@ -33,6 +33,7 @@ import { AllConfigType } from "../config/config.type";
   controllers: [GithubStorageController],
   providers: [
     GithubStorageService
-  ]
+  ],
+  exports: [GithubStorageService]
 })
 export class GithubStorageModule {}

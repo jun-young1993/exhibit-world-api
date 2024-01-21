@@ -38,6 +38,11 @@ export interface GithubConfig  {
   }
 }
 
+export interface MulterConfig {
+  image: string;
+  gltf: string;
+}
+
 export interface JwtConfig extends JwtModuleOptions{}
 
 export interface GithubStorageConfig extends GithubConfig{}
@@ -47,4 +52,5 @@ export type AllConfigType = {
   database: DatabaseConfig;
   jwt: JwtConfig,
   [GithubStorageConfigName]: GithubStorageConfig;
+  multer: MulterConfig;
 };

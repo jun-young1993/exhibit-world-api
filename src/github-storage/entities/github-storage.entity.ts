@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "ty
 import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { Group } from "../../groups/entities/group.entity";
+import { Exhibit } from "../../exhibits/entities/exhibit.entity";
 
 @Entity({name: 'github_storage'})
 export class GithubStorage extends EntityHelper {
@@ -21,4 +22,10 @@ export class GithubStorage extends EntityHelper {
   )
   @JoinColumn()
   group: Group
+
+  @OneToOne(
+    () => Exhibit,
+    (exhibit: Exhibit) => exhibit.githubStorage,
+  )
+  exhibit: Exhibit
 }

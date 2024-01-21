@@ -6,7 +6,7 @@ import { existsSync, mkdirSync } from "fs";
 import {v4 as uuid} from 'uuid';
 
 export const MulterGltfOptions = {
-  dest: process.env.IMAGE_MULTER_DEST,
+  dest: process.env.GLTF_MULTER_DEST,
   fileFilter(req, file, cb) {
 
     if (file.mimetype.match(/\/(octet-stream)$/)) {

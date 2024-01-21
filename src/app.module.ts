@@ -19,8 +19,10 @@ import { GithubStorageModule } from './github-storage/github-storage.module';
 import { GithubModule } from './github/github.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ExhibitsModule } from './exhibits/exhibits.module';
 import githubStorageConfig from "./config/github-storage.config";
 import JwtConfig from "./config/jwt.config";
+import MulterConfig from "./config/multer.config";
 
 
 
@@ -32,7 +34,8 @@ import JwtConfig from "./config/jwt.config";
         databaseConfig,
         appConfig,
         githubStorageConfig,
-        JwtConfig
+        JwtConfig,
+        MulterConfig
       ],
       envFilePath:['.env']
     }),
@@ -53,7 +56,8 @@ import JwtConfig from "./config/jwt.config";
     GithubStorageModule,
     GithubModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    ExhibitsModule
   ],
   controllers: [AppController],
   providers: [AppService],
