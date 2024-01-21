@@ -10,10 +10,6 @@ import * as fs from "fs";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GithubStorage } from "./entities/github-storage.entity";
 import { Repository } from "typeorm";
-import { GroupsService } from "../groups/groups.service";
-import { Group } from "../groups/entities/group.entity";
-import {v4} from 'uuid';
-import { MulterGltfOptions } from "../option/multer-gltf.option";
 
 @Injectable()
 export class GithubStorageService {
@@ -22,7 +18,6 @@ export class GithubStorageService {
     private readonly httpService: HttpService,
     private readonly githubService: GithubService,
     private readonly configService: ConfigService<AllConfigType>,
-    private readonly groupsService: GroupsService,
     @InjectRepository(GithubStorage)
     private readonly githubStorageRepository: Repository<GithubStorage>
   ) {
@@ -47,41 +42,53 @@ export class GithubStorageService {
   {
     const filename = file.filename;
     const target = this.currentFileTarget(filename);
-    return await this.githubStorageRepository.save(
+
+    const githubStorage = await this.githubStorageRepository.save(
       this.githubStorageRepository.create({
         path: target,
         filename: filename,
       })
     )
 
-  }
+    await this.putContent(githubStorage, file);
+    return githubStorage;
 
-  async createGroup(target: string, filename: string): Promise<Group>
+  }
+  async getContent(githubStorage: GithubStorage): Promise<{data: {sha: string}}>
   {
-    const group = await this.groupsService.createDefault();
-
-    await this.githubStorageRepository.save(
-      this.githubStorageRepository.create({
-        path: target,
-        filename: filename,
-        group: group
-      })
+    return await this.httpService.axiosRef.get(
+      `${this.options.endpoint.content}/${githubStorage.path}`
     )
-    return this.groupsService.findOne(group.id);
   }
+  async putContent(githubStorage: GithubStorage, file: Express.Multer.File, update?: boolean) {
 
-  pubContent(target: string, content) {
-    this.httpService.axiosRef.put(
-      `${this.options.endpoint.content}/${target}`,
-      {
-        message: 'my commit message',
-        content: content,
-        committer: {
-          name: 'Kim Jun Young',
-          email: 'juny3738@gamil.com',
-        }
+    const content = fs.readFileSync(file.path, 'base64');
+    const data:{
+      message: string,
+      content: string,
+      committer: {
+        name: string,
+        email: string
+      },
+      sha?: string
+    } = {
+      message: 'my commit message',
+      content: content,
+      committer: {
+        name: 'Kim Jun Young',
+        email: 'juny3738@gamil.com',
       }
+    }
+    if(update){
+      const getContent = await this.getContent(githubStorage);
+      data.sha = getContent.data.sha;
+    }
+
+    const result = await this.httpService.axiosRef.put(
+      `${this.options.endpoint.content}/${githubStorage.path}`,
+      data
     )
+
   }
 
   currentFileTarget(filename: string){
@@ -91,19 +98,5 @@ export class GithubStorageService {
     const day = ("0" + date.getDate()).slice(-2);
     const target = `${year}/${month}/${day}/${filename}`;
     return target;
-  }
-
-  async upload(file: Express.Multer.File): Promise<Group>
-  {
-
-    const target = this.currentFileTarget(file.filename)
-    const content = fs.readFileSync(file.path, 'base64');
-
-    const group = await this.createGroup(target, file.filename);
-    this.pubContent(target, content);
-
-
-    return group;
-
   }
 }

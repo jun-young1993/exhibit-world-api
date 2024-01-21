@@ -20,7 +20,6 @@ export class GithubStorage extends EntityHelper {
     () => Group,
     (group: Group) => group.githubStorage,
   )
-  @JoinColumn()
   group: Group
 
   @OneToOne(

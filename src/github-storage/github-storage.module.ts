@@ -14,7 +14,6 @@ import { AllConfigType } from "../config/config.type";
   imports: [
     TypeOrmModule.forFeature([GithubStorage]),
     GithubModule,
-    GroupsModule,
     HttpModule.registerAsync({
       useFactory: async function (configService : ConfigService<AllConfigType>){
         const githubConfig = configService.get(GithubConfigType.STORAGE);

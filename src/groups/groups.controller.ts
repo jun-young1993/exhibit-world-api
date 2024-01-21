@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { GroupsService } from './groups.service';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Group } from "./entities/group.entity";
-import { UpdateGroupDto } from "./dto/update-group.dto";
-import { GltfService } from "../gltf/gltf.service";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { MulterGltfOptions } from "../option/multer-gltf.option";
+import { Express } from "express";
+import { GithubStorageService } from "../github-storage/github-storage.service";
 
 @ApiTags("Groups")
 @Controller({
@@ -14,37 +15,30 @@ import { GltfService } from "../gltf/gltf.service";
 export class GroupsController {
   constructor(
     private readonly groupsService: GroupsService,
-    private readonly gltfService: GltfService
+    private readonly githubStorageService: GithubStorageService
   ) {}
 
   @Post()
-  @ApiOperation({
-    summary: 'Create a new group',
-    description: 'Creates a new group with the specified parameters.'
+  @ApiOperation({ summary: `Upload a new GLTF file`} )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
-  async create(@Body() createGroupDto: CreateGroupDto): Promise<Group>
+  @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Group>
   {
-    return this.groupsService.create(createGroupDto);
-  }
-
-  @Post('/default')
-  @ApiOperation({
-    summary: 'Create a new default group',
-    description: 'Creates a new default group with the specified parameters.'
-  })
-  async createDefault(): Promise<Group>
-  {
-    return this.groupsService.createDefault();
-  }
-
-  @Post('/gltf/:uuid')
-  @ApiOperation({
-    summary: 'Create a new gltf group',
-    description: 'Creates a new gltf group with the specified parameters.'
-  })
-  async createGltf(@Param('uuid') uuid: string) {
-    const gltf = await this.gltfService.findOneGltf(uuid);
-    return await this.groupsService.createGltf(gltf);
+    const githubStorage = await this.githubStorageService.create(file);
+    return this.groupsService.create(githubStorage);
   }
 
   @Get()
@@ -67,13 +61,28 @@ export class GroupsController {
     return this.groupsService.findOne(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({
-    summary: 'Update a group',
-    description: 'Update a group.',
+  @Post(':id')
+  @ApiOperation({ summary: `Upload a new GLTF file`} )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
-  update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
-    return this.groupsService.update(id, updateGroupDto)
+  @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
+  async update(
+    @Param("id") id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const group = await this.groupsService.findOne(id);
+    await this.githubStorageService.putContent(group.githubStorage, file, true);
+    return group;
   }
 
   @Delete(':id')

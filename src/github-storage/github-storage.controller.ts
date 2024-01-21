@@ -33,25 +33,4 @@ export class GithubStorageController {
     return this.githubStorageService.findOne(uuid);
   }
 
-  @Post()
-  @ApiOperation({ summary: `Upload a new GLTF file`} )
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
-  async gltfUpload(
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return await this.githubStorageService.upload(file);
-  }
-
 }

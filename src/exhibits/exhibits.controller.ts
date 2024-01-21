@@ -40,21 +40,8 @@ export class ExhibitsController {
   async gltfUpload(
     @UploadedFile() file: Express.Multer.File,
   ){
-
-
-
-  console.log("=>(exhibits.controller.ts:47) file", file);
-
     const githubStorage = await this.githubStorageService.create(file);
     const exhibit = await this.exhibitsService.create(githubStorage);
-    // const target = this.githubStorageService.currentFileTarget(file.filename)
-    console.log("=>(exhibits.controller.ts:52) file.path", file.path);
-    const content = fs.readFileSync(file.path, 'base64');
-    console.log("=>(exhibits.controller.ts:54) target", githubStorage.path);
-    await this.githubStorageService.pubContent(githubStorage.path,content);
-
     return exhibit;
  }
-
-
 }
