@@ -29,6 +29,10 @@ async function bootstrap() {
     credentials: true,
   }); // CORS 활성화
   const options = new DocumentBuilder()
+    // .addSecurity('basic', {
+    //   type: 'http',
+    //   scheme: 'basic',
+    // })
     .setTitle('API')
     .setDescription('API docs')
     .setVersion('1.0')

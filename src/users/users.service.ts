@@ -26,8 +26,9 @@ export class UsersService {
   async findOneByEmail(email: string){
     return this.userRepository.findOne({
       where : {
-        email: email
-      }
+        email: email,
+        isActive: true
+      },
     })
   }
 
@@ -47,6 +48,7 @@ export class UsersService {
     if(compare === false){
       throw new HttpException('Invalid Password',HttpStatus.UNAUTHORIZED);
     }
+    
     return user;
   }
 }

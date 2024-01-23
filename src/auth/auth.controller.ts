@@ -1,11 +1,12 @@
-import { Body, Controller, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Req, Request, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { UsersService } from "../users/users.service";
 import { LoginUserDto } from "../users/dto/login-user.dto";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { AllConfigType } from "../config/config.type";
+import { AuthGuard } from "./auth.guard";
 
 @ApiTags('Auth')
 @Controller({
@@ -25,6 +26,17 @@ export class AuthController {
 
     const user = await this.usersService.login(loginUserDto);
     const jwtConfig = this.configService.get('jwt');
-    return this.jwtService.sign(user.toJSON());
+    const accessToken = await this.jwtService.signAsync(user.toJSON());
+    
+    return {
+      access_token: accessToken
+    };
+  }
+  
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Get('profile')
+  getProfile(@Request() req){
+    return req.user;
   }
 }
