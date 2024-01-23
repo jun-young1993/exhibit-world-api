@@ -60,6 +60,14 @@ export class GithubStorageService {
       `${this.options.endpoint.content}/${githubStorage.path}`
     )
   }
+  async deleteContent(githubStorage: GithubStorage, params){
+    const result = await this.httpService.axiosRef.delete(
+      `${this.options.endpoint.content}/${githubStorage.path}`,
+      params
+    )
+    return result;
+  }
+
   async putContent(githubStorage: GithubStorage, file: Express.Multer.File, update?: boolean) {
 
     const content = fs.readFileSync(file.path, 'base64');
@@ -88,7 +96,7 @@ export class GithubStorageService {
       `${this.options.endpoint.content}/${githubStorage.path}`,
       data
     )
-
+    return result;
   }
 
   currentFileTarget(filename: string){

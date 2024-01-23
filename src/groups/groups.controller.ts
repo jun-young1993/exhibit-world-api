@@ -62,7 +62,7 @@ export class GroupsController {
   }
 
   @Post(':id')
-  @ApiOperation({ summary: `Upload a new GLTF file`} )
+  @ApiOperation({ summary: `Update a new GLTF file`} )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -81,7 +81,8 @@ export class GroupsController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const group = await this.groupsService.findOne(id);
-    await this.githubStorageService.putContent(group.githubStorage, file, true);
+    const result = await this.githubStorageService.putContent(group.githubStorage, file, true);
+
     return group;
   }
 
