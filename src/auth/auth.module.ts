@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from "../users/users.module";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { AllConfigType } from "../config/config.type";
+import { AllConfigType, JwtConfig } from "../config/config.type";
 import { PassportModule } from '@nestjs/passport';
 import { AuthConstant } from './auth.constanse';
 
@@ -16,7 +16,7 @@ import { AuthConstant } from './auth.constanse';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: async function(configService: ConfigService<AllConfigType>){
-        const jwtConfig = configService.get(AuthConstant.JWT);
+        const jwtConfig = configService.get<JwtConfig>(AuthConstant.JWT);
         return {
           global: true,
           secret: jwtConfig.secret,

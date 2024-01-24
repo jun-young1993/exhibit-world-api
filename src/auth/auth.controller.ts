@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Ip, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { UsersService } from "../users/users.service";
@@ -7,7 +7,8 @@ import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { AllConfigType } from "../config/config.type";
 import { AuthGuard } from "./auth.guard";
-
+import { Response, Request } from "express";
+import { AuthConstant } from "./auth.constanse";
 @ApiTags('Auth')
 @Controller({
   path: 'auth',
@@ -22,21 +23,31 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto){
+  async login(
+    @Body() loginUserDto: LoginUserDto, 
+    @Res({ passthrough: true }) response: Response,
+    @Ip() ip
+  ){
 
     const user = await this.usersService.login(loginUserDto);
-    const jwtConfig = this.configService.get('jwt');
-    const accessToken = await this.jwtService.signAsync(user.toJSON());
-    
-    return {
-      access_token: accessToken
-    };
+    user.loginIp = ip;
+
+    const userJson = user.toJSON();
+    delete userJson.password;
+
+    const accessToken = await this.jwtService.signAsync(userJson);
+
+    await this.usersService.update(user);
+  
+    response.cookie(AuthConstant.AUTHORIZATION,accessToken, {
+      httpOnly: true,
+      path: '/'
+    });
   }
   
   @UseGuards(AuthGuard)
-  @ApiBearerAuth()
   @Get('profile')
-  getProfile(@Request() req){
-    return req.user;
+  getProfile(@Req() request){
+    return request.user;
   }
 }

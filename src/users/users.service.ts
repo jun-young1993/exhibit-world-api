@@ -23,6 +23,10 @@ export class UsersService {
     )
   }
 
+  async update(user: User){
+    return await this.userRepository.save(user);
+  }
+
   async findOneByEmail(email: string){
     return this.userRepository.findOne({
       where : {

@@ -3,6 +3,8 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService, TokenExpiredError } from "@nestjs/jwt";
 import { Observable } from "rxjs";
 import { AllConfigType } from "src/config/config.type";
+import { Request } from 'express';
+import { AuthConstant } from "./auth.constanse";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -42,16 +44,16 @@ export class AuthGuard implements CanActivate {
 	}
 
 	private extractTokenFromHeader(request: Request): string | undefined {
-		
-		if(!('authorization' in request.headers)){
+		console.log(request.cookies);
+		if(!(AuthConstant.AUTHORIZATION in request.cookies)){
 			throw new UnauthorizedException('authorization not found in header');
 		}
 
-		if(typeof request.headers?.authorization !== 'string'){
+		if(typeof request.cookies[AuthConstant.AUTHORIZATION] !== 'string'){
 			throw new UnauthorizedException('authorization is not a string');
 		}
-	
-		const [type, token] = request.headers?.authorization?.split(' ') ?? [];
+		
+		const [type, token] = request.cookies[AuthConstant.AUTHORIZATION]?.split(' ') ?? [];
 		
 		return type === 'Bearer' ? token : undefined;
 	}

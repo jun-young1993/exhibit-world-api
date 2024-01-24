@@ -1,3 +1,4 @@
 export enum AuthConstant {
-	JWT = 'jwt'
+	JWT = 'jwt',
+	AUTHORIZATION = 'authorization'
 }

@@ -16,10 +16,13 @@ export class User extends EntityHelper{
 	password: string;
 
 	@Column({ default: false })
-	isRemember: boolean
+	isRemember: boolean;
 
 	@Column({ default: true })
 	isActive: boolean;
+
+	@Column({ nullable:true })
+	loginIp: string;
 
 	@BeforeInsert()
 	async hashPassword(): Promise<void> {
