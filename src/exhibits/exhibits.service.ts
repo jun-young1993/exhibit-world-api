@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateExhibitDto } from './dto/create-exhibit.dto';
 import { UpdateExhibitDto } from './dto/update-exhibit.dto';
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { Exhibit } from "./entities/exhibit.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GithubStorage } from "../github-storage/entities/github-storage.entity";
@@ -20,6 +20,17 @@ export class ExhibitsService {
         githubStorage: githubStorage
       })
     )
+  }
+
+  async findAll( options?: FindManyOptions<Exhibit>): Promise<Exhibit[] | []> {
+    return await this.exhibitRepository.find(options);
+  }
+
+  findOne(uuid: string): Promise<Exhibit>
+  {
+    return this.exhibitRepository.findOneBy({
+      id: uuid
+    });
   }
 
 

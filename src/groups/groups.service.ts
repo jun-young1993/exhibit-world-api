@@ -35,9 +35,5 @@ export class GroupsService {
 
   };
 
-  async remove(id: string) {
-    const group = await this.findOne(id);
 
-    return group;
-  }
 }

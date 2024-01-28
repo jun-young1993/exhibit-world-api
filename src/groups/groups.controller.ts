@@ -92,8 +92,17 @@ export class GroupsController {
     description: 'Delete a group.',
   })
   async remove(@Param('id') id: string) {
+    const group = await this.groupsService.findOne(id);
 
-    return this.groupsService.remove(id);
+    const result = {...group};
+
+    await group.githubStorage.remove();
+    await group.remove();
+
+    return result;
+
+
+
 
   }
 

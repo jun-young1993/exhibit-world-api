@@ -1,10 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { GithubStorageService } from './github-storage.service';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { Express, Response } from "express";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { MulterGltfOptions } from "../option/multer-gltf.option";
-import { GroupsService } from "../groups/groups.service";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Github-Storage')
 @Controller({

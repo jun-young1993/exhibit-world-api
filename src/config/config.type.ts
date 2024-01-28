@@ -36,6 +36,10 @@ export interface GithubConfig  {
   endpoint: {
     content: string
   }
+  committer: {
+    name: string,
+    email: string
+  }
 }
 
 export interface MulterConfig {

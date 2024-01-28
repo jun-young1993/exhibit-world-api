@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGithubStorageDto } from './dto/create-github-storage.dto';
-import { UpdateGithubStorageDto } from './dto/update-github-storage.dto';
 import { GithubConfigType, GithubService } from "../github/github.service";
 import { ConfigService } from "@nestjs/config";
 import { HttpService } from "@nestjs/axios";
-import { AllConfigType, GithubStorageConfig, MulterConfig } from "../config/config.type";
+import { AxiosResponse, AxiosRequestConfig } from "axios";
+import { AllConfigType, GithubStorageConfig } from "../config/config.type";
 import { Express } from "express";
 import * as fs from "fs";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GithubStorage } from "./entities/github-storage.entity";
 import { Repository } from "typeorm";
+import { Observable } from "rxjs";
+import { Github } from "../github/entities/github.entity";
+
+export interface GithubRepositoryContent {
+  message: string,
+  content: string,
+  committer: {
+    name: string,
+    email: string
+  },
+  sha?: string
+}
 
 @Injectable()
 export class GithubStorageService {
@@ -29,8 +40,9 @@ export class GithubStorageService {
     const content = await this.httpService.axiosRef.get(
       `${this.options.endpoint.content}/${githubStorage.path}`
     )
+    const sha = content.data.sha;
     return {
-      download_url: content.data.download_url
+      download_url: `${content.data.download_url}?token=${sha}`
     }
   }
 
@@ -54,38 +66,37 @@ export class GithubStorageService {
     return githubStorage;
 
   }
-  async getContent(githubStorage: GithubStorage): Promise<{data: {sha: string}}>
+  async getContent(githubStorage: GithubStorage): Promise<AxiosResponse<GithubRepositoryContent>>
   {
     return await this.httpService.axiosRef.get(
       `${this.options.endpoint.content}/${githubStorage.path}`
     )
   }
-  async deleteContent(githubStorage: GithubStorage, params){
+
+  async deleteContent(githubStorage: GithubStorage){
+    const content = await this.getContent(githubStorage);
+
     const result = await this.httpService.axiosRef.delete(
-      `${this.options.endpoint.content}/${githubStorage.path}`,
-      params
-    )
+      `${this.options.endpoint.content}/${githubStorage.path}`, {
+        data: {
+          owner: this.options.owner,
+          repo: this.options.repo,
+          path: githubStorage.path,
+          committer: this.options.committer,
+          sha: content.data.sha,
+          author: this.options.committer
+        },
+    });
     return result;
   }
 
   async putContent(githubStorage: GithubStorage, file: Express.Multer.File, update?: boolean) {
 
     const content = fs.readFileSync(file.path, 'base64');
-    const data:{
-      message: string,
-      content: string,
-      committer: {
-        name: string,
-        email: string
-      },
-      sha?: string
-    } = {
+    const data:GithubRepositoryContent = {
       message: 'my commit message',
       content: content,
-      committer: {
-        name: 'Kim Jun Young',
-        email: 'juny3738@gamil.com',
-      }
+      committer: this.options.committer
     }
     if(update){
       const getContent = await this.getContent(githubStorage);
@@ -96,6 +107,7 @@ export class GithubStorageService {
       `${this.options.endpoint.content}/${githubStorage.path}`,
       data
     )
+    console.log("=>(github-storage.service.ts:100) result", result.data);
     return result;
   }
 

@@ -22,6 +22,12 @@ class EnvironmentVariablesValidator {
 
   @IsUrl()
   GIT_HUB_API_BASE_URL: string;
+
+  @IsString()
+  GIT_HUB_STORAGE_EMAIL: string;
+
+  @IsString()
+  GIT_HUB_STORAGE_NAME: string;
 }
 
 export default registerAs<GithubStorageConfig>(GithubStorageConfigName, () => {
@@ -33,6 +39,10 @@ export default registerAs<GithubStorageConfig>(GithubStorageConfigName, () => {
     owner: process.env.GIT_HUB_STORAGE_OWNER,
     version: process.env.GIT_HUB_STORAGE_API_VERSION,
     base_url: process.env.GIT_HUB_API_BASE_URL,
+    committer: {
+      email: process.env.GIT_HUB_STORAGE_EMAIL,
+      name: process.env.GIT_HUB_STORAGE_NAME,
+    },
     endpoint:{
       content: `repos/${process.env.GIT_HUB_STORAGE_OWNER}/${process.env.GIT_HUB_STORAGE_REPO}/contents`
     }
