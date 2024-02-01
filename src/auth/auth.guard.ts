@@ -45,6 +45,7 @@ export class AuthGuard implements CanActivate {
 
 	private extractTokenFromHeader(request: Request): string | undefined {
 		console.log(request.cookies);
+		console.log(request.headers);
 		if(!(AuthConstant.AUTHORIZATION in request.cookies)){
 			throw new UnauthorizedException('authorization not found in header');
 		}

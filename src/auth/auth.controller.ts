@@ -38,11 +38,14 @@ export class AuthController {
     const accessToken = await this.jwtService.signAsync(userJson);
 
     await this.usersService.update(user);
-  
+    response.clearCookie(AuthConstant.AUTHORIZATION);
     response.cookie(AuthConstant.AUTHORIZATION,accessToken, {
       httpOnly: true,
-      path: '/'
+      path: '/',
+      maxAge: 0,
     });
+    delete user.password;
+    return user;
   }
   
   @UseGuards(AuthGuard)
