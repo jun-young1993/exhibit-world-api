@@ -6,6 +6,7 @@ import { AllConfigType } from "./config/config.type";
 import { VersioningType } from "@nestjs/common";
 import { json, urlencoded } from "express";
 import * as cookieParser from 'cookie-parser';
+import { AuthGuard } from './auth/auth.guard';
 
 
 async function bootstrap() {
@@ -15,6 +16,8 @@ async function bootstrap() {
   app.use(json({limit: '50mb'}));
   app.use(cookieParser());
   app.use(urlencoded({ extended: true, limit: '50mb' }));
+
+  
 
   app.setGlobalPrefix(
     configService.getOrThrow('app.apiPrefix', { infer: true }),

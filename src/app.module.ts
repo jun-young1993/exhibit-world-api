@@ -16,6 +16,8 @@ import { ExhibitsModule } from './exhibits/exhibits.module';
 import githubStorageConfig from "./config/github-storage.config";
 import JwtConfig from "./config/jwt.config";
 import MulterConfig from "./config/multer.config";
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.guard';
 
 
 
@@ -46,6 +48,8 @@ import MulterConfig from "./config/multer.config";
     ExhibitsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService
+  ],
 })
 export class AppModule {}

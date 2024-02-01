@@ -34,22 +34,27 @@ export class AuthController {
 
     const userJson = user.toJSON();
     delete userJson.password;
+    delete user.password;
 
     const accessToken = await this.jwtService.signAsync(userJson);
-
+    
     await this.usersService.update(user);
-    response.clearCookie(AuthConstant.AUTHORIZATION);
+
+    const decodeToeken = this.jwtService.decode(accessToken);
+    console.log(decodeToeken);
     response.cookie(AuthConstant.AUTHORIZATION,accessToken, {
+      secure: true,
       httpOnly: true,
       path: '/',
-      maxAge: 0,
+      expires: new Date(decodeToeken.exp * 1000),
+      sameSite: "none"
     });
-    delete user.password;
+
     return user;
   }
   
-  @UseGuards(AuthGuard)
   @Get('profile')
+  @UseGuards(AuthGuard)
   getProfile(@Req() request){
     return request.user;
   }
