@@ -1,7 +1,8 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { GithubStorage } from "../../github-storage/entities/github-storage.entity";
+import { User } from "src/users/entities/user.entity";
 
 
 @Entity({name: 'group'})
@@ -13,10 +14,18 @@ export class Group extends EntityHelper{
   @OneToOne(
     () => GithubStorage,
     (githubStorage) => githubStorage.group,
-    {eager: true, cascade: true, onDelete: "CASCADE"}
+    {nullable: false, eager: true, cascade: true, onDelete: "CASCADE"}
   )
   @JoinColumn()
   githubStorage: GithubStorage
+
+  @ManyToOne(
+    () => User,
+    (user) => user.group,
+    {nullable: false}
+  )
+  @JoinColumn()
+  user: User
 
 
 }

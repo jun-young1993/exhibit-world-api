@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
 
 	private extractTokenFromHeader(request: Request): string | undefined {
 		console.log(request.cookies);
-		console.log(request.headers);
+		
 		if(!(AuthConstant.AUTHORIZATION in request.cookies)){
 			throw new UnauthorizedException('authorization not found in header');
 		}
@@ -53,7 +53,8 @@ export class AuthGuard implements CanActivate {
 		if(typeof request.cookies[AuthConstant.AUTHORIZATION] !== 'string'){
 			throw new UnauthorizedException('authorization is not a string');
 		}
-		
+		console.log('token',request.cookies[AuthConstant.AUTHORIZATION]);
+		return request.cookies[AuthConstant.AUTHORIZATION];
 		const [type, token] = request.cookies[AuthConstant.AUTHORIZATION]?.split(' ') ?? [];
 		
 		return type === 'Bearer' ? token : undefined;

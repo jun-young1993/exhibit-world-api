@@ -13,22 +13,6 @@ import { AuthConstant } from './auth.constanse';
   imports: [
     UsersModule,
     PassportModule.register({ defaultStrategy: AuthConstant.JWT }),
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: async function(configService: ConfigService<AllConfigType>){
-        const jwtConfig = configService.get<JwtConfig>(AuthConstant.JWT);
-        return {
-          global: true,
-          secret: jwtConfig.secret,
-          signOptions: jwtConfig.signOptions
-        }
-      },
-      // useFactory: async (configService: ConfigService) => ({
-      //   global: true,
-      //   secret: configService.get('jwt.secret'),
-      //   signOptions: configService.get('jwt.signOptions')
-      // })
-    })
   ],
   controllers: [AuthController],
   providers: [AuthService],

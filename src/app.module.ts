@@ -18,6 +18,7 @@ import JwtConfig from "./config/jwt.config";
 import MulterConfig from "./config/multer.config";
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { JwtAuthModule } from './jwt/jwt.module';
 
 
 
@@ -45,7 +46,8 @@ import { AuthGuard } from './auth/auth.guard';
     GithubModule,
     UsersModule,
     AuthModule,
-    ExhibitsModule
+    ExhibitsModule,
+    JwtAuthModule
   ],
   controllers: [AppController],
   providers: [

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from "@nestjs/common";
 import { GroupsService } from './groups.service';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Group } from "./entities/group.entity";
@@ -6,8 +6,11 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterGltfOptions } from "../option/multer-gltf.option";
 import { Express } from "express";
 import { GithubStorageService } from "../github-storage/github-storage.service";
+import { AuthGuard } from "src/auth/auth.guard";
+
 
 @ApiTags("Groups")
+@UseGuards(AuthGuard)
 @Controller({
   path: 'groups',
   version: '1'
