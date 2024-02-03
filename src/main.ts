@@ -34,15 +34,11 @@ async function bootstrap() {
     credentials: true,
   }); // CORS 활성화
   const options = new DocumentBuilder()
-    // .addSecurity('basic', {
-    //   type: 'http',
-    //   scheme: 'basic',
-    // })
     .setTitle('API')
     .setDescription('API docs')
     .setVersion('1.0')
-    .addBearerAuth()
     .build();
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
   await app.listen(configService.getOrThrow('app.port', { infer: true }));

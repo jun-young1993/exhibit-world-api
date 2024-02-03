@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Group } from "../groups/entities/group.entity";
 import { GithubStorage } from "../github-storage/entities/github-storage.entity";
+import { User } from "../users/entities/user.entity";
 
 @Injectable()
 export class GroupsService {
@@ -18,18 +19,27 @@ export class GroupsService {
     })
   }
 
-  findAll(): Promise<Group[]>
+  findAll(user: User): Promise<Group[]>
   {
-    return this.groupRepository.find();
+    console.log("=>(groups.service.ts:25) user", user);
+    return this.groupRepository.find({
+     where: {
+       user: {
+         id: user.id
+       }
+     }
+    });
   }
 
   async create(
-    githubStorage: GithubStorage
+    githubStorage: GithubStorage,
+    user: User
   ): Promise<Group>
   {
     return await this.groupRepository.save(
       this.groupRepository.create({
-        githubStorage: githubStorage
+        githubStorage: githubStorage,
+        user: user
       })
     );
 

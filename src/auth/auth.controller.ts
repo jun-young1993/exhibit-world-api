@@ -28,7 +28,6 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
     @Ip() ip
   ){
-
     const user = await this.usersService.login(loginUserDto);
     user.loginIp = ip;
 
@@ -40,13 +39,13 @@ export class AuthController {
     
     await this.usersService.update(user);
 
-    const decodeToeken = this.jwtService.decode(accessToken);
-    console.log(decodeToeken);
-    response.cookie(AuthConstant.AUTHORIZATION,accessToken, {
+    const decodeToken = this.jwtService.decode(accessToken);
+
+    response.cookie(AuthConstant.AUTHORIZATION,`Bearer ${accessToken}`, {
       secure: true,
       httpOnly: true,
       path: '/',
-      expires: new Date(decodeToeken.exp * 1000),
+      expires: new Date(decodeToken.exp * 1000),
       sameSite: "none"
     });
 

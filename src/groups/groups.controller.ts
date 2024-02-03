@@ -1,6 +1,17 @@
-import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  Req
+} from "@nestjs/common";
 import { GroupsService } from './groups.service';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCookieAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Group } from "./entities/group.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { MulterGltfOptions } from "../option/multer-gltf.option";
@@ -37,11 +48,13 @@ export class GroupsController {
   })
   @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
   async create(
+    @Req() request,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<Group>
   {
+    const { user } = request;
     const githubStorage = await this.githubStorageService.create(file);
-    return this.groupsService.create(githubStorage);
+    return this.groupsService.create(githubStorage, user);
   }
 
   @Get()
@@ -49,9 +62,10 @@ export class GroupsController {
     summary: 'Retrieve all groups',
     description: 'Retrieves a list of all existing groups.',
   })
-  findAll(): Promise<Group[]>
+  findAll(@Req() request): Promise<Group[]>
   {
-    return this.groupsService.findAll();
+    const { user } = request;
+    return this.groupsService.findAll(user);
   }
 
   @Get(':id')
