@@ -12,6 +12,11 @@ export class GroupsService {
     private readonly groupRepository: Repository<Group>,
   ) {}
 
+  /**
+   * Find a group by its UUID.
+   * @param {string} id The UUID of the group to find.
+   * @returns {Promise<Group>} A Promise that resolves to the found Group
+   */
   findOne(id: string): Promise<Group>
   {
     return this.groupRepository.findOneBy({
@@ -19,9 +24,13 @@ export class GroupsService {
     })
   }
 
+  /**
+   * Find all groups associated with a user.
+   * @param {User} user The user to find groups for.
+   * @returns {Promise<Group[]>} A promise that resolves to an array of groups.
+   */
   findAll(user: User): Promise<Group[]>
   {
-    console.log("=>(groups.service.ts:25) user", user);
     return this.groupRepository.find({
      where: {
        user: {
@@ -31,6 +40,12 @@ export class GroupsService {
     });
   }
 
+  /**
+   * Create a new group. 
+   * @param {GithubStorage} githubStorage 
+   * @param {User} user The user to find groups for.
+   * @returns {Promise<Group>} A promise that resolves to the created group.
+   */
   async create(
     githubStorage: GithubStorage,
     user: User
@@ -44,6 +59,16 @@ export class GroupsService {
     );
 
   };
+
+  /**
+   * Patch a group.
+   * @param {UpdateGroupDto} group The Group.
+   * @returns {Promise<Group>} A promise that resolves to the updated group.
+   */
+  async patch(group: Group): Promise<Group>
+  {
+    return await this.groupRepository.save(group);
+  }
 
 
 }
