@@ -3,7 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from "@nestjs/config";
 import { AllConfigType } from "./config/config.type";
-import { VersioningType } from "@nestjs/common";
+import { ValidationPipe, VersioningType } from "@nestjs/common";
 import { json, urlencoded } from "express";
 import * as cookieParser from 'cookie-parser';
 import { AuthGuard } from './auth/auth.guard';
@@ -17,7 +17,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
-  
+  app.useGlobalPipes(new ValidationPipe());
 
   app.setGlobalPrefix(
     configService.getOrThrow('app.apiPrefix', { infer: true }),

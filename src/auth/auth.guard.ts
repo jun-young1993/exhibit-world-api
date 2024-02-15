@@ -45,8 +45,6 @@ export class AuthGuard implements CanActivate {
 
 	private extractTokenFromHeader(request: Request): string | undefined {
 
-		// request.cookies[AuthConstant.AUTHORIZATION] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImE3YTA1YTQ1LTEyYWEtNDJkMS05YTkyLWM4OTY1OTgzN2QxMSIsImVtYWlsIjoianVueTM3MzhAZ21haWwuY29tIiwiaXNSZW1lbWJlciI6dHJ1ZSwiaXNBY3RpdmUiOnRydWUsImxvZ2luSXAiOiI6OmZmZmY6MTI3LjAuMC4xIiwiX19lbnRpdHkiOiJVc2VyIiwiaWF0IjoxNzA2OTM4OTU5LCJleHAiOjE3MDY5NDI1NTl9.OuidrdxdDixIu9-87UnOcQNyoBamxph3DkHHzwQdMts';
-
 		if(!(AuthConstant.AUTHORIZATION in request.cookies)){
 			throw new UnauthorizedException('authorization not found in header');
 		}

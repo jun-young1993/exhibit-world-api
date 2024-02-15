@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { FindOptionsWhere, Repository } from "typeorm";
+import { FindOptionsWhere, Repository, UpdateResult } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Group } from "../groups/entities/group.entity";
 import { GithubStorage } from "../github-storage/entities/github-storage.entity";
 import { User } from "../users/entities/user.entity";
+import { UpdateGroupDto } from "./dto/update-group.dto";
 
 @Injectable()
 export class GroupsService {
@@ -62,12 +63,14 @@ export class GroupsService {
 
   /**
    * Patch a group.
+   * @param {string} uuid The Group UUID
    * @param {UpdateGroupDto} group The Group.
    * @returns {Promise<Group>} A promise that resolves to the updated group.
    */
-  async patch(group: Group): Promise<Group>
+  async patch(uuid: string, updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
   {
-    return await this.groupRepository.save(group);
+    return await this.groupRepository.update(uuid,updateGroupDto);
+
   }
 
 

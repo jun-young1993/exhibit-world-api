@@ -8,7 +8,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
-  Req
+  Req, Patch
 } from "@nestjs/common";
 import { GroupsService } from './groups.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCookieAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -18,6 +18,7 @@ import { MulterGltfOptions } from "../option/multer-gltf.option";
 import { Express } from "express";
 import { GithubStorageService } from "../github-storage/github-storage.service";
 import { AuthGuard } from "src/auth/auth.guard";
+import { UpdateGroupDto } from "./dto/update-group.dto";
 
 
 @ApiTags("Groups")
@@ -117,10 +118,15 @@ export class GroupsController {
     await group.remove();
 
     return result;
+  }
 
-
-
-
+  @Patch(':uuid')
+  @ApiOperation({
+    summary: 'Patch a group',
+    description: 'Patch a group.',
+  })
+  patch(@Param('uuid') uuid: string, @Body() updateGroupDto: UpdateGroupDto) {
+    return this.groupsService.patch(uuid, updateGroupDto);
   }
 
 }
