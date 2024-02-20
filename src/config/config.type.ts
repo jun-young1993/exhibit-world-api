@@ -8,6 +8,7 @@ export type AppConfig = {
   frontendDomain?: string;
   backendDomain: string;
   port: number;
+  host: string;
   apiPrefix: string;
 };
 export type DatabaseConfig = {
