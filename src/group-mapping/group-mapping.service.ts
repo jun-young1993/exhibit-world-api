@@ -33,8 +33,15 @@ export class GroupMappingService {
     })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} groupMapping`;
+/**
+   * Find a group by its UUID.
+   * @param {string} id The UUID of the group to find.
+   * @returns {Promise<GroupMapping>} A Promise that resolves to the found Group
+   */
+  findOne(id: string): Promise<GroupMapping> {
+    return this.groupMappingRepository.findOneBy({
+      id: id
+    })
   }
 
   update(id: number, updateGroupMappingDto: UpdateGroupMappingDto) {

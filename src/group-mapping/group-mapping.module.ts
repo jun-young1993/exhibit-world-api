@@ -7,6 +7,7 @@ import { GroupMapping } from './entities/group-mapping.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([GroupMapping])],
   controllers: [GroupMappingController],
-  providers: [GroupMappingService]
+  providers: [GroupMappingService],
+  exports: [GroupMappingService]
 })
 export class GroupMappingModule {}
