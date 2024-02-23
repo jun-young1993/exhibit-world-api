@@ -3,6 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, OneToMany } from 
 import * as bcrypt from 'bcrypt';
 import { EntityHelper } from "../../utils/entity-helper";
 import { Group } from "src/groups/entities/group.entity";
+import { GroupMapping } from "src/group-mapping/entities/group-mapping.entity";
 
 @Entity({name: 'user'})
 export class User extends EntityHelper{
@@ -30,6 +31,12 @@ export class User extends EntityHelper{
 		(group) => group.user
 	)
 	group: Group[]
+
+	@OneToMany(
+		() => GroupMapping,
+		(groupMapping) => groupMapping.user
+	)
+	groupMapping: GroupMapping[]
 
 	@BeforeInsert()
 	async hashPassword(): Promise<void> {

@@ -19,6 +19,7 @@ import MulterConfig from "./config/multer.config";
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtAuthModule } from './jwt/jwt.module';
+import { GroupMappingModule } from './group-mapping/group-mapping.module';
 
 
 
@@ -47,7 +48,8 @@ import { JwtAuthModule } from './jwt/jwt.module';
     UsersModule,
     AuthModule,
     ExhibitsModule,
-    JwtAuthModule
+    JwtAuthModule,
+    GroupMappingModule
   ],
   controllers: [AppController],
   providers: [

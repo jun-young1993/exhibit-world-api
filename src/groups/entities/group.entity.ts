@@ -3,6 +3,7 @@ import { EntityHelper } from "../../utils/entity-helper";
 import { ApiProperty } from "@nestjs/swagger";
 import { GithubStorage } from "../../github-storage/entities/github-storage.entity";
 import { User } from "src/users/entities/user.entity";
+import { GroupMapping } from "src/group-mapping/entities/group-mapping.entity";
 
 
 @Entity({name: 'group'})
@@ -31,6 +32,14 @@ export class Group extends EntityHelper{
   )
   @JoinColumn()
   user: User
+
+  @ManyToOne(
+    () => GroupMapping,
+    (groupMapping) => groupMapping.group,
+    {nullable: false}
+  )
+  @JoinColumn()
+  groupMapping: GroupMapping
 
 
 }

@@ -44,7 +44,6 @@ export class AuthGuard implements CanActivate {
 	}
 
 	private extractTokenFromHeader(request: Request): string | undefined {
-
 		if(!(AuthConstant.AUTHORIZATION in request.cookies)){
 			throw new UnauthorizedException('authorization not found in header');
 		}

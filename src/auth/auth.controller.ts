@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Ip, Post, Req, Res, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiCookieAuth, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { UsersService } from "../users/users.service";
 import { LoginUserDto } from "../users/dto/login-user.dto";
@@ -10,6 +10,7 @@ import { AuthGuard } from "./auth.guard";
 import { Response, Request } from "express";
 import { AuthConstant } from "./auth.constanse";
 @ApiTags('Auth')
+@ApiCookieAuth()
 @Controller({
   path: 'auth',
   version: '1'
