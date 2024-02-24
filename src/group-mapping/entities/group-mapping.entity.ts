@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Group } from "src/groups/entities/group.entity";
 import { User } from "src/users/entities/user.entity";
 import { EntityHelper } from "src/utils/entity-helper";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'group_mapping'})
 export class GroupMapping extends EntityHelper{
@@ -29,4 +29,6 @@ export class GroupMapping extends EntityHelper{
 	@JoinColumn()
 	user: User
 
+	@CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+	createdAt: Date;
 }

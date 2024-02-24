@@ -16,12 +16,20 @@ import { User } from 'src/users/entities/user.entity';
   path: 'group-mapping',
   version: '1'
 })
+
 export class GroupMappingController {
   constructor(private readonly groupMappingService: GroupMappingService) {}
 
   @Post()
-  create(@Body() createGroupMappingDto: CreateGroupMappingDto) {
-    return this.groupMappingService.create(createGroupMappingDto);
+  @ApiOperation({
+    summary: 'Create a group-mapping',
+    description: 'Create a list of all existing group-mapping.',
+  })
+  create(
+    @Body() createGroupMappingDto: CreateGroupMappingDto,
+    @AuthUser() user: User
+  ) {
+    return this.groupMappingService.create(createGroupMappingDto, user);
   }
 
   @Get()
@@ -36,7 +44,7 @@ export class GroupMappingController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.groupMappingService.findOne(+id);
+    return this.groupMappingService.findOne(id);
   }
 
   @Patch(':id')

@@ -5,6 +5,7 @@ import { Group } from "../groups/entities/group.entity";
 import { GithubStorage } from "../github-storage/entities/github-storage.entity";
 import { User } from "../users/entities/user.entity";
 import { UpdateGroupDto } from "./dto/update-group.dto";
+import { GroupMapping } from "../group-mapping/entities/group-mapping.entity";
 
 @Injectable()
 export class GroupsService {
@@ -38,6 +39,23 @@ export class GroupsService {
          id: user.id
        }
      }
+    });
+  }
+
+  /**
+   * Find all groups associated with a group mapping
+   *
+   * @param {GroupMapping} groupMapping The groupMapping find groups for.
+   * @returns {Promise<Group[] | []>} A Promise that resolves to an array of groups.
+   */
+  findAllByMapping(groupMapping: GroupMapping): Promise<Group[] | []>
+  {
+    return this.groupRepository.find({
+      where: {
+        groupMapping: {
+          id: groupMapping.id
+        }
+      }
     });
   }
 

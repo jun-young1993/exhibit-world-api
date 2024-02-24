@@ -12,8 +12,13 @@ export class GroupMappingService {
     @InjectRepository(GroupMapping)
     private readonly groupMappingRepository: Repository<GroupMapping>
   ){}
-  create(createGroupMappingDto: CreateGroupMappingDto) {
-    return 'This action adds a new groupMapping';
+  create(createGroupMappingDto: CreateGroupMappingDto, user: User) {
+    return this.groupMappingRepository.save(
+      this.groupMappingRepository.create({
+          ...createGroupMappingDto,
+          user: user
+        })
+    )
   }
 
   /**

@@ -19,10 +19,12 @@ import { Express } from "express";
 import { GithubStorageService } from "../github-storage/github-storage.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import { UpdateGroupDto } from "./dto/update-group.dto";
+import { GroupMappingService } from "../group-mapping/group-mapping.service";
 
 
 @ApiTags("Groups")
 @UseGuards(AuthGuard)
+@ApiCookieAuth()
 @Controller({
   path: 'groups',
   version: '1'
@@ -30,7 +32,8 @@ import { UpdateGroupDto } from "./dto/update-group.dto";
 export class GroupsController {
   constructor(
     private readonly groupsService: GroupsService,
-    private readonly githubStorageService: GithubStorageService
+    private readonly githubStorageService: GithubStorageService,
+    private readonly groupMappingService: GroupMappingService
   ) {}
 
   @Post()
@@ -58,15 +61,15 @@ export class GroupsController {
     return this.groupsService.create(githubStorage, user);
   }
 
-  @Get()
+  @Get('/mapping/:uuid')
   @ApiOperation({
-    summary: 'Retrieve all groups',
+    summary: 'Retrieve all groups by mapping',
     description: 'Retrieves a list of all existing groups.',
   })
-  findAll(@Req() request): Promise<Group[]>
+  async findAllByMapping(@Param('uuid') uuid: string): Promise<Group[] | []>
   {
-    const { user } = request;
-    return this.groupsService.findAll(user);
+    const groupMapping = await this.groupMappingService.findOne(uuid);
+    return await this.groupsService.findAllByMapping(groupMapping);
   }
 
   @Get(':id')
