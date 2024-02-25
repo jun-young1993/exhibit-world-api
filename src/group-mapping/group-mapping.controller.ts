@@ -6,6 +6,7 @@ import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthUser } from 'src/decorator/auth-user.decorator';
 import { User } from 'src/users/entities/user.entity';
+import { GroupMapping } from "./entities/group-mapping.entity";
 
 
 
@@ -52,8 +53,9 @@ export class GroupMappingController {
     return this.groupMappingService.update(+id, updateGroupMappingDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.groupMappingService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: GroupMapping['id']) {
+
+    return this.groupMappingService.remove(uuid);
   }
 }
