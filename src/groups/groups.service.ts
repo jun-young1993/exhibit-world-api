@@ -27,22 +27,6 @@ export class GroupsService {
   }
 
   /**
-   * Find all groups associated with a user.
-   * @param {User} user The user to find groups for.
-   * @returns {Promise<Group[]>} A promise that resolves to an array of groups.
-   */
-  findAll(user: User): Promise<Group[]>
-  {
-    return this.groupRepository.find({
-     where: {
-       user: {
-         id: user.id
-       }
-     }
-    });
-  }
-
-  /**
    * Find all groups associated with a group mapping
    *
    * @param {GroupMapping} groupMapping The groupMapping find groups for.
@@ -67,13 +51,13 @@ export class GroupsService {
    */
   async create(
     githubStorage: GithubStorage,
-    user: User
+    groupMapping: GroupMapping
   ): Promise<Group>
   {
     return await this.groupRepository.save(
       this.groupRepository.create({
         githubStorage: githubStorage,
-        user: user
+        groupMapping: groupMapping
       })
     );
 
@@ -85,7 +69,7 @@ export class GroupsService {
    * @param {UpdateGroupDto} group The Group.
    * @returns {Promise<Group>} A promise that resolves to the updated group.
    */
-  async patch(uuid: string, updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
+  async patch(uuid: GroupMapping['id'], updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
   {
     return await this.groupRepository.update(uuid,updateGroupDto);
 

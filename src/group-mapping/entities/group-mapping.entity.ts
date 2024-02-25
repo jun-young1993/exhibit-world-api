@@ -23,7 +23,7 @@ export class GroupMapping extends EntityHelper{
 
 	@ManyToOne(
 		() => User,
-		(user) => user.group,
+		(user) => user.groupMapping,
 		{nullable: false}
 	)
 	@JoinColumn()

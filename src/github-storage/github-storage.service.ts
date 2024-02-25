@@ -11,6 +11,7 @@ import { GithubStorage } from "./entities/github-storage.entity";
 import { Repository } from "typeorm";
 import { Observable } from "rxjs";
 import { Github } from "../github/entities/github.entity";
+import { GroupMapping } from "../group-mapping/entities/group-mapping.entity";
 
 export interface GithubRepositoryContent {
   message: string,
@@ -50,6 +51,11 @@ export class GithubStorageService {
     return this.githubStorageRepository.find();
   }
 
+  /**
+   * Create a new gltf
+   *
+   * @param {Express.Multer.File} file
+   */
   async create(file: Express.Multer.File): Promise<GithubStorage>
   {
     const filename = file.filename;

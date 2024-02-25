@@ -27,12 +27,6 @@ export class User extends EntityHelper{
 	loginIp: string;
 
 	@OneToMany(
-		() => Group,
-		(group) => group.user
-	)
-	group: Group[]
-
-	@OneToMany(
 		() => GroupMapping,
 		(groupMapping) => groupMapping.user
 	)

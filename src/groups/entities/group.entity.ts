@@ -26,14 +26,6 @@ export class Group extends EntityHelper{
   githubStorage: GithubStorage
 
   @ManyToOne(
-    () => User,
-    (user) => user.group,
-    {nullable: false}
-  )
-  @JoinColumn()
-  user: User
-
-  @ManyToOne(
     () => GroupMapping,
     (groupMapping) => groupMapping.group,
     {nullable: false}

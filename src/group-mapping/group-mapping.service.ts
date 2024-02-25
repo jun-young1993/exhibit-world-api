@@ -3,7 +3,7 @@ import { CreateGroupMappingDto } from './dto/create-group-mapping.dto';
 import { UpdateGroupMappingDto } from './dto/update-group-mapping.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupMapping } from './entities/group-mapping.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from "typeorm";
 import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
@@ -49,8 +49,16 @@ export class GroupMappingService {
     })
   }
 
-  update(id: number, updateGroupMappingDto: UpdateGroupMappingDto) {
-    return `This action updates a #${id} groupMapping`;
+  /**
+   * Patch a group mapping.
+   * @param {GroupMapping['id']} uuid The Group Mapping UUID
+   * @param {UpdateGroupMappingDto} updateGroupMappingDto The Group Mapping.
+   *
+   * @returns {Promise<GroupMapping>} A promise that resolve to the updated group mapping.
+   */
+  update(uuid: string, updateGroupMappingDto: UpdateGroupMappingDto): Promise<UpdateResult>
+  {
+    return this.groupMappingRepository.update(uuid, updateGroupMappingDto);
   }
 
   remove(id: number) {
