@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { GroupsController } from './groups.controller';
 import { Group } from "./entities/group.entity";
@@ -11,7 +11,8 @@ import { GroupMappingModule } from 'src/group-mapping/group-mapping.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Group,GithubStorage]),
-    GithubStorageModule, GroupMappingModule
+    GithubStorageModule, 
+    forwardRef(()=>GroupMappingModule)
   ],
   controllers: [GroupsController],
   providers: [GroupsService],

@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthUser } from 'src/decorator/auth-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { GroupMapping } from "./entities/group-mapping.entity";
+import { GroupsService } from 'src/groups/groups.service';
 
 
 
@@ -19,7 +20,10 @@ import { GroupMapping } from "./entities/group-mapping.entity";
 })
 
 export class GroupMappingController {
-  constructor(private readonly groupMappingService: GroupMappingService) {}
+  constructor(
+    private readonly groupMappingService: GroupMappingService,
+    private readonly groupsService: GroupsService
+  ) {}
 
   @Post()
   @ApiOperation({
@@ -58,8 +62,9 @@ export class GroupMappingController {
   }
 
   @Delete(':uuid')
-  remove(@Param('uuid') uuid: GroupMapping['id']) {
-
+  async remove(@Param('uuid') uuid: GroupMapping['id']) {
+    const groupMapping = await this.groupMappingService.findOne(uuid);
+    await this.groupsService.removeByMapping(groupMapping);
     return this.groupMappingService.remove(uuid);
   }
 }

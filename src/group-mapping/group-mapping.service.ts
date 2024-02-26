@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GroupMapping } from './entities/group-mapping.entity';
 import { Repository, UpdateResult } from "typeorm";
 import { User } from 'src/users/entities/user.entity';
+import { Group } from 'src/groups/entities/group.entity';
 
 @Injectable()
 export class GroupMappingService {
@@ -61,7 +62,16 @@ export class GroupMappingService {
     return this.groupMappingRepository.update(uuid, updateGroupMappingDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} groupMapping`;
+  /**
+   * remove a group mapping
+   * @param {GroupMapping['id']} uuid 
+   * @returns {Promise<GroupMapping>} 
+   */
+  async remove(uuid: GroupMapping['id']) : Promise<GroupMapping>
+  {
+    const groupMapping = await this.findOne(uuid);
+    
+    return await groupMapping.remove();
+    
   }
 }

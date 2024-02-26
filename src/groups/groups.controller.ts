@@ -69,7 +69,7 @@ export class GroupsController {
     summary: 'Retrieve all groups by mapping',
     description: 'Retrieves a list of all existing groups.',
   })
-  async findAllByMapping(@Param('uuid') uuid: string): Promise<Group[] | []>
+  async findAllByMapping(@Param('uuid') uuid: GroupMapping['id']): Promise<Group[] | []>
   {
     const groupMapping = await this.groupMappingService.findOne(uuid);
     return await this.groupsService.findAllByMapping(groupMapping);
@@ -116,14 +116,7 @@ export class GroupsController {
     description: 'Delete a group.',
   })
   async remove(@Param('id') id: string) {
-    const group = await this.groupsService.findOne(id);
-
-    const result = {...group};
-
-    await group.githubStorage.remove();
-    await group.remove();
-
-    return result;
+    return await this.groupsService.remove(id);
   }
 
   @Patch(':uuid')

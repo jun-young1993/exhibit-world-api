@@ -72,7 +72,37 @@ export class GroupsService {
   async patch(uuid: GroupMapping['id'], updateGroupDto: UpdateGroupDto): Promise<UpdateResult>
   {
     return await this.groupRepository.update(uuid,updateGroupDto);
+  }
 
+  /**
+   * Remove a Group
+   *  
+   * @param {Group['id']} uuid
+   */
+  async remove(uuid: Group['id'])
+  {
+    const group = await this.findOne(uuid);
+    const result = {...group};
+
+    await group.githubStorage.remove();
+    await group.remove();
+
+    return result;
+  }
+
+  /**
+   * remove a groups by mapping
+   * 
+   * @param {GroupMapping} groupMapping 
+   * @returns {Promise<Group[] | []>} 
+   */
+  async removeByMapping(groupMapping: GroupMapping): Promise<Group[] | []>
+  {
+    const groups = await this.findAllByMapping(groupMapping);
+    for(const group of groups){
+      await this.remove(group.id);
+    }
+    return groups;
   }
 
 
