@@ -20,6 +20,7 @@ import { GithubStorageService } from "../github-storage/github-storage.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import { UpdateGroupDto } from "./dto/update-group.dto";
 import { GroupMappingService } from "../group-mapping/group-mapping.service";
+import { GroupMapping } from "../group-mapping/entities/group-mapping.entity";
 
 
 @ApiTags("Groups")
@@ -36,7 +37,7 @@ export class GroupsController {
     private readonly groupMappingService: GroupMappingService
   ) {}
 
-  @Post()
+  @Post('/mapping/:uuid')
   @ApiOperation({ summary: `Upload a new GLTF file`} )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -53,12 +54,14 @@ export class GroupsController {
   @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
   async create(
     @Req() request,
+    @Param('uuid') uuid: GroupMapping['id'],
     @UploadedFile() file: Express.Multer.File,
   ): Promise<Group>
   {
     const { user } = request;
+    const groupMapping = await this.groupMappingService.findOne(uuid);
     const githubStorage = await this.githubStorageService.create(file);
-    return this.groupsService.create(githubStorage, user);
+    return this.groupsService.create(githubStorage,  groupMapping);
   }
 
   @Get('/mapping/:uuid')

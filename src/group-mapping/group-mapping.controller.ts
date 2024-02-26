@@ -48,9 +48,13 @@ export class GroupMappingController {
     return this.groupMappingService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGroupMappingDto: UpdateGroupMappingDto) {
-    return this.groupMappingService.update(+id, updateGroupMappingDto);
+  @Patch(':uuid')
+  @ApiOperation({
+    summary: 'Patch a group mapping',
+    description: 'Patch a group mapping.',
+  })
+  update(@Param('uuid') uuid: GroupMapping['id'], @Body() updateGroupMappingDto: UpdateGroupMappingDto) {
+    return this.groupMappingService.update(uuid,updateGroupMappingDto);
   }
 
   @Delete(':uuid')
