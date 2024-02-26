@@ -15,6 +15,9 @@ export class GroupMapping extends EntityHelper{
 	})
 	name: string;
 
+	@Column("decimal", { precision: 7, scale: 2, default: 0.3 })
+	ambientLightIntensity: number;
+
 	@OneToMany(
 		() => Group,
 		(group) => group.groupMapping,
