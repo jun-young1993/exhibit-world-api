@@ -98,8 +98,15 @@ export class ExhibitsController {
     await exhibit.remove();
 
     return result;
-    // await exhibit.githubStorage.remove();
+ }
 
+ @Patch(':uuid')
+ @ApiOperation({
+   summary: 'Patch a exhibit',
+   description: 'Patch a existing exhibit.',
+ })
+  update(@Param('uuid') uuid: Exhibit['id'], @Body() updateExhibitDto: UpdateExhibitDto){
+    return this.exhibitsService.update(uuid, updateExhibitDto);
  }
 
 }

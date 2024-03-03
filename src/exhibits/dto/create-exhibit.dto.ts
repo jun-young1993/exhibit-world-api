@@ -1,5 +1,6 @@
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import { Exhibit } from "../entities/exhibit.entity";
 
 export class CreateExhibitDto {
-  gltf: GLTF
+  name?: Exhibit['name']
 }

@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { EntityHelper } from "../../utils/entity-helper";
 import { Group } from "src/groups/entities/group.entity";
 import { GroupMapping } from "src/group-mapping/entities/group-mapping.entity";
+import { Exhibit } from "../../exhibits/entities/exhibit.entity";
 
 @Entity({name: 'user'})
 export class User extends EntityHelper{
@@ -31,6 +32,12 @@ export class User extends EntityHelper{
 		(groupMapping) => groupMapping.user
 	)
 	groupMapping: GroupMapping[]
+
+	@OneToMany(
+		() => Exhibit,
+		(exhibit) => exhibit.user
+	)
+	exhibit: Exhibit[]
 
 	@BeforeInsert()
 	async hashPassword(): Promise<void> {
