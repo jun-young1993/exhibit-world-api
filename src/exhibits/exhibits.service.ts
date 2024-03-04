@@ -5,6 +5,7 @@ import { FindManyOptions, Repository, UpdateResult } from "typeorm";
 import { Exhibit } from "./entities/exhibit.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GithubStorage } from "../github-storage/entities/github-storage.entity";
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ExhibitsService {
@@ -13,17 +14,27 @@ export class ExhibitsService {
     private readonly exhibitRepository: Repository<Exhibit>
   ) {
   }
-  async create(githubStorage: GithubStorage): Promise<Exhibit>
+  async create(githubStorage: GithubStorage, user: User): Promise<Exhibit>
   {
     return await this.exhibitRepository.save(
       this.exhibitRepository.create({
-        githubStorage: githubStorage
+        githubStorage: githubStorage,
+        user: user
       })
     )
   }
 
-  async findAll( options?: FindManyOptions<Exhibit>): Promise<Exhibit[] | []> {
-    return await this.exhibitRepository.find(options);
+  async findAll( user: User): Promise<Exhibit[] | []> {
+    return await this.exhibitRepository.find({
+      where:{
+        user : {
+          id: user.id
+        }
+      },
+      order: {
+        createdAt: 'DESC'
+      },
+    });
   }
 
   findOne(uuid: string): Promise<Exhibit>

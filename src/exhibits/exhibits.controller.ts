@@ -9,7 +9,8 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
-  Query
+  Query,
+  UseGuards
 } from "@nestjs/common";
 import { ExhibitsService } from './exhibits.service';
 import { CreateExhibitDto } from './dto/create-exhibit.dto';
@@ -25,6 +26,11 @@ import * as fs from "fs";
 import { Group } from "../groups/entities/group.entity";
 import { Exhibit } from "./entities/exhibit.entity";
 import { FindManyOptions } from "typeorm";
+import { AuthUser } from "src/decorator/auth-user.decorator";
+import { User } from "src/users/entities/user.entity";
+import { Public } from "src/decorator/public.decorator";
+import { AuthGuard } from "src/auth/auth.guard";
+
 
 @ApiTags("Exhibits")
 @Controller({
@@ -54,9 +60,11 @@ export class ExhibitsController {
   @UseInterceptors(FileInterceptor('file', MulterGltfOptions))
   async gltfUpload(
     @UploadedFile() file: Express.Multer.File,
+    @AuthUser() user: User
   ){
+    console.log('user',user);
     const githubStorage = await this.githubStorageService.create(file);
-    const exhibit = await this.exhibitsService.create(githubStorage);
+    const exhibit = await this.exhibitsService.create(githubStorage, user);
     return exhibit;
  }
 
@@ -65,16 +73,15 @@ export class ExhibitsController {
    summary: 'Retrieve all exhibits',
    description: 'Retrieves a list of all existing exhibits.',
  })
- findAll(): Promise<Exhibit[] | []>
+ findAll(
+  @AuthUser() user: User
+ ): Promise<Exhibit[] | []>
  {
-   return this.exhibitsService.findAll({
-     order: {
-       createdAt: 'DESC'
-     }
-   });
+   return this.exhibitsService.findAll(user);
  }
 
  @Get(':uuid')
+ @Public()
  @ApiOperation({
    summary: 'Retrieve a exhibit',
    description: 'Retrieves a existing exhibit.',

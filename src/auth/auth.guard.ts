@@ -5,20 +5,31 @@ import { Observable } from "rxjs";
 import { AllConfigType } from "src/config/config.type";
 import { Request } from 'express';
 import { AuthConstant } from "./auth.constanse";
+import { Reflector } from "@nestjs/core";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 	constructor(
 		private readonly jwtService: JwtService,
-		private readonly configService: ConfigService<AllConfigType>
+		private readonly configService: ConfigService<AllConfigType>,
+		private readonly reflector: Reflector
 	) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean>
 	{
+		
+		const isPublic = this.reflector.get<boolean>(
+			"isPublic",
+			context.getHandler()
+		)
+		if(isPublic){
+			return true;
+		}
+		
 		const jwtConfig = this.configService.get('jwt');
 		const request = context.switchToHttp().getRequest();
 		const token = this.extractTokenFromHeader(request);
-		console.log('token',token);
+		
 		if (!token) {
 		  throw new UnauthorizedException();
 		}
@@ -40,6 +51,7 @@ export class AuthGuard implements CanActivate {
 		  }
 		  throw error;
 		}
+
 		return true;
 	}
 

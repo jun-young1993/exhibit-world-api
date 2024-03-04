@@ -53,7 +53,11 @@ import { GroupMappingModule } from './group-mapping/group-mapping.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard
+    }
   ],
 })
 export class AppModule {}

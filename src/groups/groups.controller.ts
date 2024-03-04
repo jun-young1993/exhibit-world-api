@@ -21,6 +21,7 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { UpdateGroupDto } from "./dto/update-group.dto";
 import { GroupMappingService } from "../group-mapping/group-mapping.service";
 import { GroupMapping } from "../group-mapping/entities/group-mapping.entity";
+import { Public } from "src/decorator/public.decorator";
 
 
 @ApiTags("Groups")
