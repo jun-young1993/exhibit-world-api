@@ -9,6 +9,7 @@ import { AllConfigType } from "../config/config.type";
 import { AuthGuard } from "./auth.guard";
 import { Response, Request } from "express";
 import { AuthConstant } from "./auth.constanse";
+import { Public } from "src/decorator/public.decorator";
 @ApiTags('Auth')
 @ApiCookieAuth()
 @Controller({
@@ -23,6 +24,7 @@ export class AuthController {
     private readonly configService: ConfigService<AllConfigType>
   ) {}
 
+  @Public()
   @Post('login')
   async login(
     @Body() loginUserDto: LoginUserDto, 
