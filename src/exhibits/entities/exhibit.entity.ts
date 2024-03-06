@@ -20,9 +20,14 @@ export class Exhibit extends EntityHelper {
   id: string
 
   @Column({
-    default: () => "no name"
+    default: "no name"
   })
   name: string;
+
+  @Column({
+    default: true
+  })
+  isPublic: boolean;
 
   @ManyToOne(
     () => User,
