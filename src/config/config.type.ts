@@ -1,5 +1,6 @@
 import { GithubStorageConfigName } from "./github-storage.config";
 import { JwtModuleOptions } from "@nestjs/jwt";
+import { GithubConfigName } from "./github.config";
 
 export type AppConfig = {
   nodeEnv: string;
@@ -34,9 +35,7 @@ export interface GithubConfig  {
   owner: string;
   version: string;
   base_url: string;
-  endpoint: {
-    content: string
-  }
+  endpoint: object;
   committer: {
     name: string,
     email: string
@@ -50,12 +49,23 @@ export interface MulterConfig {
 
 export interface JwtConfig extends JwtModuleOptions{}
 
-export interface GithubStorageConfig extends GithubConfig{}
+export interface GithubStorageConfig extends GithubConfig{
+  endpoint: {
+    content: string
+  }
+}
+
+export interface GithubBaseConfig extends GithubConfig{
+  endpoint: {
+    releases: string
+  }
+}
 
 export type AllConfigType = {
   app: AppConfig;
   database: DatabaseConfig;
   jwt: JwtConfig,
   [GithubStorageConfigName]: GithubStorageConfig;
+  [GithubConfigName]: GithubBaseConfig;
   multer: MulterConfig;
 };

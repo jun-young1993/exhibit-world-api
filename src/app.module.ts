@@ -20,6 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtAuthModule } from './jwt/jwt.module';
 import { GroupMappingModule } from './group-mapping/group-mapping.module';
+import githubConfig from './config/github.config';
 
 
 
@@ -32,7 +33,8 @@ import { GroupMappingModule } from './group-mapping/group-mapping.module';
         appConfig,
         githubStorageConfig,
         JwtConfig,
-        MulterConfig
+        MulterConfig,
+        githubConfig
       ],
       envFilePath:['.env']
     }),
