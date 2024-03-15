@@ -10,6 +10,8 @@ import { AuthGuard } from "./auth.guard";
 import { Response, Request } from "express";
 import { AuthConstant } from "./auth.constanse";
 import { Public } from "src/decorator/public.decorator";
+import { User } from "src/users/entities/user.entity";
+import { AuthUser } from "src/decorator/auth-user.decorator";
 @ApiTags('Auth')
 @ApiCookieAuth()
 @Controller({
@@ -64,6 +66,7 @@ export class AuthController {
   @Post('logout')
   logout(
     @Res({ passthrough: true }) response: Response,
+    @AuthUser() user: User
   ){
     response.cookie(AuthConstant.AUTHORIZATION,undefined, {
       secure: true,
@@ -71,5 +74,9 @@ export class AuthController {
       path: '/',
       sameSite: "none"
     });
+    const userJson = user.toJSON();
+    delete userJson.password;
+    
+    return userJson
   }
 }
