@@ -60,4 +60,16 @@ export class AuthController {
   getProfile(@Req() request){
     return request.user;
   }
+
+  @Post('logout')
+  logout(
+    @Res({ passthrough: true }) response: Response,
+  ){
+    response.cookie(AuthConstant.AUTHORIZATION,undefined, {
+      secure: true,
+      httpOnly: true,
+      path: '/',
+      sameSite: "none"
+    });
+  }
 }

@@ -8,16 +8,13 @@ import { AllConfigType, GithubBaseConfig, GithubConfig } from "../config/config.
 import { GithubStorageConfigName } from "../config/github-storage.config";
 import { GithubConfigName } from "src/config/github.config";
 import { plainToClass } from "class-transformer";
+import { GithubReleaseResponse } from "./interfaces/github.interface";
 export const GITHUB_CONFIG_TOKEN = 'github-config-token';
 export enum GithubConfigType {
   STORAGE = GithubStorageConfigName,
   BASE = GithubConfigName
 }
-interface GithubReleaseResponse {  
-  name: string
-  created_at: Date
-  body: string
-}
+
 
 @Injectable()
 export class GithubService {
@@ -29,7 +26,7 @@ export class GithubService {
     this.options = this.configService.get(GithubConfigType.BASE);
   }
 
-  async findAllByRelease(): Promise<[]|GithubReleaseResponse[]>
+  async findAllByRelease(perPage:number = 30, page:number = 1): Promise<[]|GithubReleaseResponse[]>
   {
     const releases = await this.httpService.axiosRef.get<[]|GithubReleaseResponse[]>(
       `${this.options.endpoint.releases}`
@@ -43,6 +40,15 @@ export class GithubService {
       }
     })
     
+  }
+
+  async findOneByRelease(): Promise<null | GithubReleaseResponse>
+  {
+    const releases = await this.findAllByRelease(1,1);
+    if(releases.length === 0){
+      return null;
+    }
+    return releases[0];
   }
 
 }

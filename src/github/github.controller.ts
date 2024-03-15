@@ -21,8 +21,18 @@ export class GithubController {
 		summary: 'Retrieve a github Release',
 		description: 'Retrieves a existing github Release.',
 	})
-	
 	findAllByRlease(){
 		return this.githubService.findAllByRelease();
+	}
+
+
+	@Get('release')
+	@Public()
+	@ApiOperation({
+		summary: 'Retrieve a github Release',
+		description: 'Retrieves a existing github Release.',
+	})
+	findOneByRelease(){
+		return this.githubService.findOneByRelease();
 	}
 }
